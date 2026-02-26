@@ -4,9 +4,11 @@ import {
   type CartViewPayload,
   useAnalytics,
   useOptimisticCart,
+  Image
 } from '@shopify/hydrogen';
 import type {HeaderQuery, CartApiQueryFragment} from 'storefrontapi.generated';
 import {useAside} from '~/components/Aside';
+import { Search, ShoppingCart } from 'lucide-react';
 
 interface HeaderProps {
   header: HeaderQuery;
@@ -24,10 +26,19 @@ export function Header({
   publicStoreDomain,
 }: HeaderProps) {
   const {shop, menu} = header;
+
   return (
     <header className="header">
       <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
-        <strong>{shop.name}</strong>
+    <div className="flex items-center gap-2">
+    <Image
+      data={shop.brand?.logo?.image}
+      alt={shop.name}
+      style={{height: '40px'}}
+    />
+     <strong>{shop.name}</strong>
+     </div>
+
       </NavLink>
       <HeaderMenu
         menu={menu}
@@ -55,7 +66,7 @@ export function HeaderMenu({
   const {close} = useAside();
 
   return (
-    <nav className={className} role="navigation">
+    <nav className={`${className} ${className === 'header-menu-desktop' ? 'w-full justify-center' : ''} ml-auto`} role="navigation">
       {viewport === 'mobile' && (
         <NavLink
           end
@@ -131,7 +142,7 @@ function SearchToggle() {
   const {open} = useAside();
   return (
     <button className="reset" onClick={() => open('search')}>
-      Search
+      <Search className="hover:scale-110 transition-all duration-300 cursor-pointer" />
     </button>
   );
 }
@@ -143,6 +154,7 @@ function CartBadge({count}: {count: number | null}) {
   return (
     <a
       href="/cart"
+      className="flex items-center gap-2"
       onClick={(e) => {
         e.preventDefault();
         open('cart');
@@ -154,7 +166,7 @@ function CartBadge({count}: {count: number | null}) {
         } as CartViewPayload);
       }}
     >
-      Cart {count === null ? <span>&nbsp;</span> : count}
+      <ShoppingCart className="hover:scale-110 transition-all duration-300 cursor-pointer" /> <span className="text-xs bg-[#eb702580]  px-2 p-0.5 rounded-full">{count === null ? <span>&nbsp;</span> : count}</span>
     </a>
   );
 }
@@ -224,8 +236,10 @@ function activeLinkStyle({
   isActive: boolean;
   isPending: boolean;
 }) {
+  const activeStyle = '0px -6px 0px 0px rgba(235, 112, 37, 0.3) inset;'
+  
   return {
-    fontWeight: isActive ? 'bold' : undefined,
+    boxShadow: isActive ? activeStyle : undefined,
     color: isPending ? 'grey' : 'black',
   };
 }

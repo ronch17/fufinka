@@ -183,6 +183,7 @@ button.reset:hover:not(:has(> *)) {
   position: sticky;
   top: 0;
   z-index: 1;
+  padding: 4rem;
 }
 
 .header-menu-mobile-toggle {
@@ -215,7 +216,7 @@ button.reset:hover:not(:has(> *)) {
   align-items: center;
   display: flex;
   grid-gap: 1rem;
-  margin-left: auto;
+  margin-right: auto;
 }
 
 .header-ctas > * {

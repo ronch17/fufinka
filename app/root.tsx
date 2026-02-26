@@ -9,6 +9,7 @@ import {
   Scripts,
   ScrollRestoration,
   useRouteLoaderData,
+  useLoaderData,
 } from 'react-router';
 import type {Route} from './+types/root';
 import favicon from '~/assets/favicon.svg';
@@ -75,7 +76,9 @@ export async function loader(args: Route.LoaderArgs) {
 
   const {storefront, env} = args.context;
 
-  return {
+  const locale = args.context.storefront.i18n;
+
+  return {  locale,
     ...deferredData,
     ...criticalData,
     publicStoreDomain: env.PUBLIC_STORE_DOMAIN,
@@ -144,9 +147,12 @@ function loadDeferredData({context}: Route.LoaderArgs) {
 
 export function Layout({children}: {children?: React.ReactNode}) {
   const nonce = useNonce();
+    const {locale} = useLoaderData<typeof loader>();
+
 
   return (
-    <html lang="en">
+    <html lang={locale.language.toLowerCase()}
+    dir={locale.language === 'HE' ? 'rtl' : 'ltr'}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -167,6 +173,7 @@ export function Layout({children}: {children?: React.ReactNode}) {
 
 export default function App() {
   const data = useRouteLoaderData<RootLoader>('root');
+
 
   if (!data) {
     return <Outlet />;

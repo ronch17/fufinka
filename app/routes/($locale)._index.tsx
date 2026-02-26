@@ -7,6 +7,10 @@ import type {
   RecommendedProductsQuery,
 } from 'storefrontapi.generated';
 import {ProductItem} from '~/components/ProductItem';
+import {Hero} from '~/components/home/Hero/Hero';
+import {HOMEPAGE_QUERY} from '~/components/home/queries';
+import { AboutSection } from '~/components/about/AboutSection';
+
 
 export const meta: Route.MetaFunction = () => {
   return [{title: 'Hydrogen | Home'}];
@@ -27,13 +31,13 @@ export async function loader(args: Route.LoaderArgs) {
  * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
  */
 async function loadCriticalData({context}: Route.LoaderArgs) {
-  const [{collections}] = await Promise.all([
+  const [featuredData, homepageData] = await Promise.all([
     context.storefront.query(FEATURED_COLLECTION_QUERY),
-    // Add other queries here, so that they are loaded in parallel
+    context.storefront.query(HOMEPAGE_QUERY),
   ]);
-
-  return {
-    featuredCollection: collections.nodes[0],
+   return {
+    featuredCollection: featuredData.collections.nodes[0],
+    homepage: homepageData.metaobject,
   };
 }
 
@@ -58,8 +62,29 @@ function loadDeferredData({context}: Route.LoaderArgs) {
 
 export default function Homepage() {
   const data = useLoaderData<typeof loader>();
+
+  // למצוא את השדה hero_slides
+  const slidesField = data.homepage?.fields.find(
+    (f) => f.key === 'hero_slides'
+  );
+
+  // למפות כל slide לאובייקט נוח
+  const slides =
+    slidesField?.references?.nodes.map((node) =>
+      Object.fromEntries(
+        node.fields.map((f) => [
+          f.key,
+          f.reference?.image?.url || f.value,
+        ])
+      )
+    ) || [];
+
+  console.log('Slides:', slides);
+
   return (
     <div className="home">
+      <Hero slides={slides} />
+      <AboutSection />
       <FeaturedCollection collection={data.featuredCollection} />
       <RecommendedProducts products={data.recommendedProducts} />
     </div>

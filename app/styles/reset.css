@@ -1,4 +1,4 @@
-body {
+/* body {
   font-family:
     system-ui,
     -apple-system,
@@ -23,7 +23,6 @@ p {
 }
 
 h1 {
-  font-size: 1.6rem;
   font-weight: 700;
   line-height: 1.4;
   margin-bottom: 2rem;
@@ -79,7 +78,7 @@ body {
 }
 
 body > main {
-  margin: 0 1rem 1rem 1rem;
+  margin: 0;
 }
 
 section {
@@ -136,4 +135,4 @@ code {
   border-radius: 4px;
   font-family: monospace;
   padding: 0.25rem;
-}
+} */
