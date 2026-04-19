@@ -19,22 +19,42 @@ const {nonce, header, NonceProvider} = createContentSecurityPolicy({
     checkoutDomain: context.env.PUBLIC_CHECKOUT_DOMAIN,
     storeDomain: context.env.PUBLIC_STORE_DOMAIN,
   },
+
+  scriptSrc: [
+    "'self'",
+
+    "https://cdn.shopify.com",
+    "https://*.shopify.com",
+    "https://shopify.com",
+    "https://monorail-edge.shopifysvc.com",
+
+    // reCAPTCHA
+    "https://www.google.com",
+    "https://www.gstatic.com",
+
+    // analytics (אם יש)
+    "https://www.google-analytics.com",
+    "https://www.googletagmanager.com",
+  ],
+
   mediaSrc: [
     "'self'",
     "https://cdn.shopify.com",
     "https://*.myshopify.com",
   ],
-  /** reCAPTCHA v3 — טעינת סקריפט ואימות */
-  scriptSrc: [
+
+  frameSrc: [
     "'self'",
-    'https://www.google.com',
-    'https://www.gstatic.com',
+    "https://www.google.com",
+    "https://www.gstatic.com",
   ],
-  frameSrc: ["'self'", 'https://www.google.com', 'https://www.gstatic.com'],
+
   connectSrc: [
     "'self'",
-    'https://www.google.com',
-    'https://www.gstatic.com',
+    "https://*.shopify.com",
+    "https://monorail-edge.shopifysvc.com",
+    "https://www.google.com",
+    "https://www.gstatic.com",
   ],
 });
 
