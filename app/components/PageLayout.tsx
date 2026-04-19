@@ -1,4 +1,4 @@
-import {Await, Link} from 'react-router';
+import {Await, Link, useFetcher} from 'react-router';
 import {Suspense, useId} from 'react';
 import type {
   CartApiQueryFragment,
@@ -14,6 +14,9 @@ import {
   SearchFormPredictive,
 } from '~/components/SearchFormPredictive';
 import {SearchResultsPredictive} from '~/components/SearchResultsPredictive';
+import type {PredictiveSearchReturn} from '~/lib/search';
+
+
 
 interface PageLayoutProps {
   cart: Promise<CartApiQueryFragment | null>;
@@ -21,6 +24,7 @@ interface PageLayoutProps {
   header: HeaderQuery;
   isLoggedIn: Promise<boolean>;
   publicStoreDomain: string;
+  footerContact: Promise<any>;
   children?: React.ReactNode;
 }
 
@@ -31,6 +35,7 @@ export function PageLayout({
   header,
   isLoggedIn,
   publicStoreDomain,
+  footerContact,
 }: PageLayoutProps) {
   return (
     <Aside.Provider>
@@ -48,6 +53,7 @@ export function PageLayout({
       <main>{children}</main>
       <Footer
         footer={footer}
+        footerContact={footerContact}
         header={header}
         publicStoreDomain={publicStoreDomain}
       />
@@ -70,30 +76,30 @@ function CartAside({cart}: {cart: PageLayoutProps['cart']}) {
 }
 
 function SearchAside() {
+  const fetcher = useFetcher<PredictiveSearchReturn>({key: 'predictive-search'});
   const queriesDatalistId = useId();
+
   return (
     <Aside type="search" heading="SEARCH">
       <div className="predictive-search">
-        <br />
-        <SearchFormPredictive>
+        <SearchFormPredictive fetcher={fetcher}>
           {({fetchResults, goToSearch, inputRef}) => (
             <>
               <input
                 name="q"
                 onChange={fetchResults}
                 onFocus={fetchResults}
-                placeholder="Search"
                 ref={inputRef}
                 type="search"
+                placeholder="חיפוש..."
                 list={queriesDatalistId}
               />
-              &nbsp;
               <button onClick={goToSearch}>Search</button>
             </>
           )}
         </SearchFormPredictive>
 
-        <SearchResultsPredictive>
+        <SearchResultsPredictive fetcher={fetcher}>
           {({items, total, term, state, closeSearch}) => {
             const {articles, collections, pages, products, queries} = items;
 
@@ -138,7 +144,6 @@ function SearchAside() {
                   >
                     <p>
                       View all results for <q>{term.current}</q>
-                      &nbsp; →
                     </p>
                   </Link>
                 ) : null}

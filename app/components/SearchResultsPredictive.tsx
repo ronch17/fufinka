@@ -34,6 +34,7 @@ type PartialPredictiveSearchResult<
 
 type SearchResultsPredictiveProps = {
   children: (args: SearchResultsPredictiveArgs) => React.ReactNode;
+  fetcher?: Fetcher<PredictiveSearchReturn>;
 };
 
 /**
@@ -41,9 +42,10 @@ type SearchResultsPredictiveProps = {
  */
 export function SearchResultsPredictive({
   children,
+  fetcher: externalFetcher,
 }: SearchResultsPredictiveProps) {
   const aside = useAside();
-  const {term, inputRef, fetcher, total, items} = usePredictiveSearch();
+  const {term, inputRef, fetcher, total, items} = usePredictiveSearch(externalFetcher);
 
   /*
    * Utility that resets the search input
@@ -281,13 +283,26 @@ function SearchResultsPredictiveEmpty({
  * const { items, total, inputRef, term, fetcher } = usePredictiveSearch();
  * '''
  **/
-function usePredictiveSearch(): UsePredictiveSearchReturn {
-  const fetcher = useFetcher<PredictiveSearchReturn>({key: 'search'});
+function usePredictiveSearch(
+  externalFetcher?: Fetcher<PredictiveSearchReturn>,
+): UsePredictiveSearchReturn {
+  const internalFetcher = useFetcher<PredictiveSearchReturn>({
+    key: 'predictive-search',
+  });
+  const fetcher = externalFetcher ?? internalFetcher;
   const term = useRef<string>('');
   const inputRef = useRef<HTMLInputElement | null>(null);
 
+  // For GET fetchers, React Router puts the query in formData during loading
   if (fetcher?.state === 'loading') {
-    term.current = String(fetcher.formData?.get('q') || '');
+    const q =
+      fetcher.formData?.get('q') ??
+      new URL(
+        fetcher.formAction ?? '',
+        'http://x',
+      ).searchParams.get('q') ??
+      '';
+    term.current = String(q);
   }
 
   // capture the search input element as a ref

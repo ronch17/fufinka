@@ -14,12 +14,29 @@ export default async function handleRequest(
   reactRouterContext: EntryContext,
   context: HydrogenRouterContextProvider,
 ) {
-  const {nonce, header, NonceProvider} = createContentSecurityPolicy({
-    shop: {
-      checkoutDomain: context.env.PUBLIC_CHECKOUT_DOMAIN,
-      storeDomain: context.env.PUBLIC_STORE_DOMAIN,
-    },
-  });
+const {nonce, header, NonceProvider} = createContentSecurityPolicy({
+  shop: {
+    checkoutDomain: context.env.PUBLIC_CHECKOUT_DOMAIN,
+    storeDomain: context.env.PUBLIC_STORE_DOMAIN,
+  },
+  mediaSrc: [
+    "'self'",
+    "https://cdn.shopify.com",
+    "https://*.myshopify.com",
+  ],
+  /** reCAPTCHA v3 — טעינת סקריפט ואימות */
+  scriptSrc: [
+    "'self'",
+    'https://www.google.com',
+    'https://www.gstatic.com',
+  ],
+  frameSrc: ["'self'", 'https://www.google.com', 'https://www.gstatic.com'],
+  connectSrc: [
+    "'self'",
+    'https://www.google.com',
+    'https://www.gstatic.com',
+  ],
+});
 
   const body = await renderToReadableStream(
     <NonceProvider>

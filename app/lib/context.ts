@@ -17,6 +17,32 @@ type AdditionalContextType = typeof additionalContext;
 
 declare global {
   interface HydrogenAdditionalContext extends AdditionalContextType {}
+
+  type Slides = {
+    title: string;
+    description?: string;
+    image: string;
+    background: string;
+    button?: string;
+  };
+
+  type WorkshopProduct = {
+    id: string;
+    title: string;
+    handle: string;
+
+    featuredImage: {
+      url: string;
+      altText: string | null;
+    } | null;
+
+    priceRange: {
+      minVariantPrice: {
+        amount: string; // Shopify מחזיר string
+        currencyCode: string;
+      };
+    };
+  };
 }
 
 /**

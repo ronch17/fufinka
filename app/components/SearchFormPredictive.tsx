@@ -17,6 +17,7 @@ type SearchFormPredictiveChildren = (args: {
 
 type SearchFormPredictiveProps = Omit<FormProps, 'children'> & {
   children: SearchFormPredictiveChildren | null;
+  fetcher: Fetcher<PredictiveSearchReturn>; // 👈 חדש
 };
 
 export const SEARCH_ENDPOINT = '/search';
@@ -27,9 +28,9 @@ export const SEARCH_ENDPOINT = '/search';
 export function SearchFormPredictive({
   children,
   className = 'predictive-search-form',
+  fetcher,
   ...props
 }: SearchFormPredictiveProps) {
-  const fetcher = useFetcher<PredictiveSearchReturn>({key: 'search'});
   const inputRef = useRef<HTMLInputElement | null>(null);
   const navigate = useNavigate();
   const aside = useAside();
@@ -69,8 +70,9 @@ export function SearchFormPredictive({
   }
 
   return (
-    <fetcher.Form {...props} className={className} onSubmit={resetInput}>
-      {children({inputRef, fetcher, fetchResults, goToSearch})}
-    </fetcher.Form>
+<fetcher.Form {...props} className={className} onSubmit={resetInput}>
+  <input type="hidden" name="predictive" value="true" />
+  {children({inputRef, fetcher, fetchResults, goToSearch})}
+</fetcher.Form>
   );
 }

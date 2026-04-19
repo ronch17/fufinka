@@ -105,6 +105,7 @@ const PRODUCT_ITEM_FRAGMENT = `#graphql
     id
     handle
     title
+    availableForSale
     featuredImage {
       id
       altText

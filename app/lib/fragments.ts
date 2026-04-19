@@ -228,6 +228,14 @@ export const HEADER_QUERY = `#graphql
   ${MENU_FRAGMENT}
 ` as const;
 
+const FOOTER_COLLECTIONS_FRAGMENT = `#graphql
+  fragment FooterCollection on Collection {
+    id
+    title
+    handle
+  }
+` as const;
+
 export const FOOTER_QUERY = `#graphql
   query Footer(
     $country: CountryCode
@@ -237,6 +245,27 @@ export const FOOTER_QUERY = `#graphql
     menu(handle: $footerMenuHandle) {
       ...Menu
     }
+    collections(first: 10, sortKey: TITLE) {
+      nodes {
+        ...FooterCollection
+      }
+    }
   }
   ${MENU_FRAGMENT}
+  ${FOOTER_COLLECTIONS_FRAGMENT}
+` as const;
+
+export const FOOTER_CONTACT_QUERY = `#graphql
+  query FooterContact(
+    $language: LanguageCode
+    $country: CountryCode
+  )
+  @inContext(language: $language, country: $country) {
+    metaobject(handle: {type: "footer_contact", handle: "footer-contact"}) {
+      fields {
+        key
+        value
+      }
+    }
+  }
 ` as const;

@@ -13,8 +13,7 @@ import {
 } from 'react-router';
 import type {Route} from './+types/root';
 import favicon from '~/assets/favicon.svg';
-import {FOOTER_QUERY, HEADER_QUERY} from '~/lib/fragments';
-import resetStyles from '~/styles/reset.css?url';
+import {FOOTER_QUERY, FOOTER_CONTACT_QUERY, HEADER_QUERY} from '~/lib/fragments';
 import appStyles from '~/styles/app.css?url';
 import tailwindCss from './styles/tailwind.css?url';
 import {PageLayout} from './components/PageLayout';
@@ -44,7 +43,7 @@ export const shouldRevalidate: ShouldRevalidateFunction = ({
 };
 
 /**
- * The main and reset stylesheets are added in the Layout component
+ * The main stylesheets are added in the Layout component
  * to prevent a bug in development HMR updates.
  *
  * This avoids the "failed to execute 'insertBefore' on 'Node'" error
@@ -122,6 +121,9 @@ async function loadCriticalData({context}: Route.LoaderArgs) {
  * fetched after the initial page load. If it's unavailable, the page should still 200.
  * Make sure to not throw any errors here, as it will cause the page to 500.
  */
+
+
+
 function loadDeferredData({context}: Route.LoaderArgs) {
   const {storefront, customerAccount, cart} = context;
 
@@ -138,10 +140,18 @@ function loadDeferredData({context}: Route.LoaderArgs) {
       console.error(error);
       return null;
     });
+
+      const footerContact = storefront
+    .query(FOOTER_CONTACT_QUERY, {
+      cache: storefront.CacheLong(),
+    })
+    .catch(() => null);
+
   return {
     cart: cart.get(),
     isLoggedIn: customerAccount.isLoggedIn(),
     footer,
+    footerContact,
   };
 }
 
@@ -152,12 +162,11 @@ export function Layout({children}: {children?: React.ReactNode}) {
 
   return (
     <html lang={locale.language.toLowerCase()}
-    dir={locale.language === 'HE' ? 'rtl' : 'ltr'}>
+    dir={locale.language === 'HE' ? 'rtl' : 'ltr'} data-theme="light">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <link rel="stylesheet" href={tailwindCss}></link>
-        <link rel="stylesheet" href={resetStyles}></link>
         <link rel="stylesheet" href={appStyles}></link>
         <Meta />
         <Links />

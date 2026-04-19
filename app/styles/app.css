@@ -1,3 +1,11 @@
+@font-face {
+  font-family: 'GveretLevin';
+  src: url('/font/GveretLevinAlefAlefAlef-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --aside-width: 400px;
   --cart-aside-summary-height-with-discount: 300px;
@@ -6,11 +14,25 @@
   --header-height: 64px;
   --color-dark: #000;
   --color-light: #fff;
+  --font-family: 'GveretLevin', sans-serif;
+  --color-primary: #d9a7b1;
+  --color-secondary: #b4c780;
 }
 
-img {
-  border-radius: 4px;
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-family);
+  }
 }
+
+/* body {
+  font-family: var(--font-family);
+} */
 
 /*
 * --------------------------------------------------
@@ -42,6 +64,7 @@ aside {
   right: calc(-1 * var(--aside-width));
   top: 0;
   transition: transform 200ms ease-in-out;
+  z-index: 10;
 }
 
 aside header {
@@ -182,8 +205,12 @@ button.reset:hover:not(:has(> *)) {
   padding: 0 1rem;
   position: sticky;
   top: 0;
-  z-index: 1;
+  z-index: 9;
   padding: 4rem;
+}
+
+.header > a {
+  transition: box-shadow 0.2s ease;
 }
 
 .header-menu-mobile-toggle {
@@ -210,6 +237,14 @@ button.reset:hover:not(:has(> *)) {
 
 .header-menu-item {
   cursor: pointer;
+  transition: box-shadow 0.2s ease;
+}
+
+.header-menu-item:hover,
+.header-menu-item[aria-current='page'],
+.header > a:hover,
+.header > a[aria-current='page'] {
+  box-shadow: 0 -6px 0 0 #d9a7b1 inset;
 }
 
 .header-ctas {
@@ -229,8 +264,125 @@ button.reset:hover:not(:has(> *)) {
 * --------------------------------------------------
 */
 .footer {
-  background: var(--color-dark);
   margin-top: auto;
+}
+
+.footer-columns {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  justify-items: center;
+  gap: 10rem;
+  padding: 3rem 1.5rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .footer-columns {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    padding: 2rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-columns {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+}
+
+.footer-column {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.footer-brand {
+  margin-bottom: 0.5rem;
+}
+
+.footer-brand a {
+  display: inline-block;
+}
+
+.footer-heading {
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0.5rem 0 0;
+}
+
+.footer-brand a {
+  display: inline-block;
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
+}
+
+.footer-brand a:hover {
+  opacity: 0.85;
+  transform: scale(1.05);
+}
+
+.footer-contact-item,
+.footer-contact,
+.footer-nav a,
+.footer-social-link {
+  color: inherit;
+  text-decoration: none;
+  font-size: 0.9rem;
+  opacity: 0.9;
+  transition:
+    opacity 0.2s,
+    color 0.2s,
+    text-decoration 0.2s;
+}
+
+.footer-contact-item:hover,
+.footer-contact:hover {
+  opacity: 1;
+  color: rgba(235, 112, 37, 0.9);
+}
+
+.footer-contact-email:hover {
+  color: rgb(249, 212, 189);
+}
+
+.footer-nav a:hover {
+  opacity: 1;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.footer-social-link:hover {
+  opacity: 1;
+}
+
+.footer-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.footer-social {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 1rem 1.5rem;
+  text-align: center;
+  width: 100%;
+}
+
+.footer-bottom p {
+  margin: 0;
+  font-size: 0.8rem;
+  opacity: 0.8;
 }
 
 .footer-menu {

@@ -404,6 +404,7 @@ async function predictiveSearch({
         limit,
         limitScope: 'EACH',
         term,
+        types: ['PRODUCT', 'COLLECTION', 'PAGE', 'ARTICLE', 'QUERY'],
       },
     });
 

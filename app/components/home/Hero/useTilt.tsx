@@ -44,8 +44,8 @@ export function TiltFloat({children}: TiltFloatProps) {
     const percentX = (x / rect.width - 0.5) * 2;
     const percentY = (y / rect.height - 0.5) * 2;
 
-    rotateX.set(percentY * -15);
-    rotateY.set(percentX * 15);
+    rotateX.set(percentY * -20);
+    rotateY.set(percentX * 20);
   }
 
   function handleMouseLeave() {

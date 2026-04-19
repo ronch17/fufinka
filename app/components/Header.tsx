@@ -30,14 +30,15 @@ export function Header({
   return (
     <header className="header">
       <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
-    <div className="flex items-center gap-2">
     <Image
       data={shop.brand?.logo?.image}
+      crop="none"
       alt={shop.name}
-      style={{height: '40px'}}
+      width={70}
+      height="auto" 
+
     />
-     <strong>{shop.name}</strong>
-     </div>
+     {/* <strong>{shop.name}</strong> */}
 
       </NavLink>
       <HeaderMenu
@@ -90,7 +91,7 @@ export function HeaderMenu({
             : item.url;
         return (
           <NavLink
-            className="header-menu-item"
+            className="header-menu-item pb-2 text-2xl"
             end
             key={item.id}
             onClick={close}
@@ -113,13 +114,13 @@ function HeaderCtas({
   return (
     <nav className="header-ctas" role="navigation">
       <HeaderMenuMobileToggle />
-      <NavLink prefetch="intent" to="/account" style={activeLinkStyle}>
+      {/* <NavLink prefetch="intent" to="/account" style={activeLinkStyle}>
         <Suspense fallback="Sign in">
           <Await resolve={isLoggedIn} errorElement="Sign in">
             {(isLoggedIn) => (isLoggedIn ? 'Account' : 'Sign in')}
           </Await>
         </Suspense>
-      </NavLink>
+      </NavLink> */}
       <SearchToggle />
       <CartToggle cart={cart} />
     </nav>
@@ -166,7 +167,7 @@ function CartBadge({count}: {count: number | null}) {
         } as CartViewPayload);
       }}
     >
-      <ShoppingCart className="hover:scale-110 transition-all duration-300 cursor-pointer" /> <span className="text-xs bg-[#eb702580]  px-2 p-0.5 rounded-full">{count === null ? <span>&nbsp;</span> : count}</span>
+      <ShoppingCart className="hover:scale-110 transition-all duration-300 cursor-pointer" /> <span className="text-xs bg-[#B4C780]  px-2 p-0.5 rounded-full">{count === null ? <span>&nbsp;</span> : count}</span>
     </a>
   );
 }
