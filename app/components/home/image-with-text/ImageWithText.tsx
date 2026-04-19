@@ -85,13 +85,13 @@ export function ImageWithText({
     <section className={`grid grid-cols-1 lg:grid-cols-2  items-center overflow-hidden ${className}`}>
       {isImageLeft ? (
         <>
-          <div className="order-2 lg:order-1">{imageBlock}</div>
-          <div className="order-1 lg:order-2">{contentBlock}</div>
+          <div className="order-2 lg:order-1 max-md:order-1">{imageBlock}</div>
+          <div className="order-1 lg:order-2 max-md:my-10">{contentBlock}</div>
         </>
       ) : (
         <>
-          <div className="order-1 lg:order-1">{contentBlock}</div>
-          <div className="order-2 lg:order-2">{imageBlock}</div>
+          <div className="order-1 lg:order-1 max-md:order-2 max-md:my-10">{contentBlock}</div>
+          <div className="order-2 lg:order-2 max-md:order-1">{imageBlock}</div>
         </>
       )}
     </section>

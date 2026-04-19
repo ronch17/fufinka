@@ -32,7 +32,7 @@ export function HeroSlide({homepage}: {homepage: Slides}) {
           <Image
             src={homepage.image}
             alt={homepage.title}
-            className="object-contain"
+            className="object-contain max-sm:w-70 max-sm:my-10"
             width={500}
             height={500}
           />
@@ -49,17 +49,17 @@ export function HeroSlide({homepage}: {homepage: Slides}) {
 
       {/* TEXT - עולה מלמטה */}
       <motion.div
-        className="flex flex-col items-center space-y-6 text-center"
+        className="flex flex-col items-center gap-3  lg:space-y-6 text-center"
         variants={textVariants}
         initial="initial"
         animate="animate"
         exit="exit"
         transition={transition}
       >
-        <h1 className="text-6xl font-bold">{homepage.title}</h1>
-        <div className="w-10 border-b-1 border-[#b4c780]" />
+        <h1 className="text-6xl font-bold max-sm:text-4xl">{homepage.title}</h1>
+        <div className="w-10 border-b-1  border-[var(--color-secondary)]" />
 
-        <Button variant="artistic" size="lg">
+        <Button variant="artistic" size="lg" className="max-sm:text-sm max-sm:px-4 max-sm:mb-15">
           {homepage.button}
         </Button>
       </motion.div>

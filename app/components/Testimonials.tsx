@@ -143,7 +143,7 @@ const image = getField2(testimonial.fields, "image");
             animate="center"
             exit="exit"
             transition={transition}
-            className=" inset-0 flex flex-col items-center justify-center gap-6 text-center px-6"
+            className=" inset-0 flex flex-col items-center justify-center gap-6 text-center px-6 max-md:px-10"
           >
             {/* Quote */}
             <span className="translate-y-8 text-4xl font-serif">

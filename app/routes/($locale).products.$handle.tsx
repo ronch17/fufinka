@@ -150,7 +150,7 @@ export default function Product() {
         variantImage={selectedVariant?.image}
       />
       <div className="product-main">
-        <h3 className="text-4xl font-medium mb-2">{title}</h3>
+        <h3 className="text-4xl font-medium mb-2 max-md:mt-5">{title}</h3>
         <ProductPrice
           price={selectedVariant?.price}
           compareAtPrice={selectedVariant?.compareAtPrice}

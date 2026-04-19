@@ -8,7 +8,7 @@ import {
 } from '@shopify/hydrogen';
 import type {HeaderQuery, CartApiQueryFragment} from 'storefrontapi.generated';
 import {useAside} from '~/components/Aside';
-import { Search, ShoppingCart } from 'lucide-react';
+import { Search, ShoppingCart, Menu } from 'lucide-react';
 
 interface HeaderProps {
   header: HeaderQuery;
@@ -28,7 +28,7 @@ export function Header({
   const {shop, menu} = header;
 
   return (
-    <header className="header">
+    <header className="header max-md:flex-row-reverse max-md:p-4 max-md:py-16 md:p-16">
       <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
     <Image
       data={shop.brand?.logo?.image}
@@ -36,7 +36,6 @@ export function Header({
       alt={shop.name}
       width={70}
       height="auto" 
-
     />
      {/* <strong>{shop.name}</strong> */}
 
@@ -91,7 +90,7 @@ export function HeaderMenu({
             : item.url;
         return (
           <NavLink
-            className="header-menu-item pb-2 text-2xl"
+            className="header-menu-item pb-2 text-2xl max-md:w-fit"
             end
             key={item.id}
             onClick={close}
@@ -112,7 +111,7 @@ function HeaderCtas({
   cart,
 }: Pick<HeaderProps, 'isLoggedIn' | 'cart'>) {
   return (
-    <nav className="header-ctas" role="navigation">
+    <nav className="header-ctas max-md:ml-auto md:mr-auto" role="navigation">
       <HeaderMenuMobileToggle />
       {/* <NavLink prefetch="intent" to="/account" style={activeLinkStyle}>
         <Suspense fallback="Sign in">
@@ -134,7 +133,7 @@ function HeaderMenuMobileToggle() {
       className="header-menu-mobile-toggle reset"
       onClick={() => open('mobile')}
     >
-      <h3>☰</h3>
+      <Menu className="hover:scale-110 transition-all duration-300 cursor-pointer" />
     </button>
   );
 }

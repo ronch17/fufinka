@@ -75,7 +75,7 @@ export function ImageWithText({
   );
 
   return (
-    <section className={`grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center pt-16 px-40`}>
+    <section className={`grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center pt-16 px-40 max-md:px-7`}>
       {isImageLeft ? (
         <>
           <div className="order-2 lg:order-1">{imageBlock}</div>

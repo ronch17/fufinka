@@ -1,8 +1,30 @@
-import {useCallback, useEffect, useMemo, useState} from 'react';
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from 'react';
 import {Image} from '@shopify/hydrogen';
 import {ChevronLeft, ChevronRight} from 'lucide-react';
 
-const VISIBLE_COUNT = 5;
+/** מתאים ל־Tailwind `sm` — מתחת לכך מוצגת תמונה אחת */
+const MOBILE_MAX_WIDTH_MEDIA = '(max-width: 639px)';
+
+function useVisibleCount() {
+  /** SSR + רינדור ראשון בלקוח: 5 — כדי שלא יהיה mismatch; מתעדכן לפני ציור במובייל */
+  const [visibleCount, setVisibleCount] = useState(5);
+
+  useLayoutEffect(() => {
+    const mq = window.matchMedia(MOBILE_MAX_WIDTH_MEDIA);
+    const sync = () => setVisibleCount(mq.matches ? 1 : 5);
+    sync();
+    mq.addEventListener('change', sync);
+    return () => mq.removeEventListener('change', sync);
+  }, []);
+
+  return visibleCount;
+}
 
 export type CarouselMediaImage = {
   __typename?: 'MediaImage' | string;
@@ -41,7 +63,7 @@ function normalizeMedia(items: CarouselMediaImage[]) {
 
 type ImageCarouselProps = {
   media: CarouselMediaImage[];
-  /** גודל srcset לכל תמונה בשורה (חמש בשורה) */
+  /** גודל srcset (ברירת מחדל: מלא רוחב במובייל, מרווחים בדסקטופ) */
   sizes?: string;
   /** יחס גובה-רוחב לכל תא */
   aspectClassName?: string;
@@ -50,14 +72,15 @@ type ImageCarouselProps = {
 
 export function ImageCarousel({
   media,
-  sizes = '(min-width: 64em) 18vw, 19vw',
+  sizes = '(max-width: 639px) 100vw, (min-width: 64em) 18vw, 19vw',
   aspectClassName = 'aspect-[3/4]',
   className = '',
 }: ImageCarouselProps) {
+  const visibleCount = useVisibleCount();
   const images = useMemo(() => normalizeMedia(media), [media]);
   const [startIndex, setStartIndex] = useState(0);
 
-  const maxStart = Math.max(0, images.length - VISIBLE_COUNT);
+  const maxStart = Math.max(0, images.length - visibleCount);
 
   useEffect(() => {
     setStartIndex((s) => Math.max(0, Math.min(s, maxStart)));
@@ -73,12 +96,12 @@ export function ImageCarousel({
 
   if (images.length === 0) return null;
 
-  const cells = Array.from({length: VISIBLE_COUNT}, (_, i) => {
-    const img = images[startIndex + i];
-    return img ?? null;
-  });
+  const canSlide = images.length > visibleCount;
 
-  const canSlide = images.length > VISIBLE_COUNT;
+  const n = images.length;
+  /** רוחב המסלול: n תאים בגודל (100%/v) כל אחד — בלי gap כדי ש־translateX באחוזים מהמסלול יהיה מדויק */
+  const trackWidth = `calc(100% * ${n} / ${visibleCount})`;
+  const trackTransform = `translateX(calc(-${startIndex} * 100% / ${n}))`;
 
   return (
     <div className={`relative w-full ${className}`} dir="rtl">
@@ -105,38 +128,38 @@ export function ImageCarousel({
         </div>
       )}
 
-      <ul
-        className="grid w-full grid-cols-5 gap-2"
-        aria-label={`גלריה, ${images.length} תמונות`}
-      >
-        {cells.map((img, i) => {
-          const globalIndex = startIndex + i;
-          return (
-            <li key={img?.url ?? `slot-${startIndex}-${i}`} className="min-w-0">
-              {img ? (
-                <div
-                  className={`overflow-hidden rounded-lg bg-neutral-100 ${aspectClassName}`}
-                >
-                  <Image
-                    data={img}
-                    alt={
-                      img.altText ||
-                      `תמונה ${globalIndex + 1} מתוך ${images.length}`
-                    }
-                    className="size-full object-cover"
-                    sizes={sizes}
-                  />
-                </div>
-              ) : (
-                <div
-                  className={`rounded-lg bg-neutral-100/60 ${aspectClassName}`}
-                  aria-hidden
+      <div className="w-full overflow-hidden" dir="ltr">
+        <ul
+          className="flex transition-transform duration-350 ease-[cubic-bezier(0.25,0.1,0.25,1)] motion-reduce:transition-none"
+          style={{
+            width: trackWidth,
+            transform: trackTransform,
+          }}
+          aria-label={`גלריה, ${images.length} תמונות`}
+        >
+          {images.map((img, globalIndex) => (
+            <li
+              key={img.url}
+              className="min-w-0 shrink-0 px-1"
+              style={{width: `calc(100% / ${n})`}}
+            >
+              <div
+                className={`overflow-hidden rounded-lg bg-neutral-100 ${aspectClassName}`}
+              >
+                <Image
+                  data={img}
+                  alt={
+                    img.altText ||
+                    `תמונה ${globalIndex + 1} מתוך ${images.length}`
+                  }
+                  className="size-full object-cover"
+                  sizes={sizes}
                 />
-              )}
+              </div>
             </li>
-          );
-        })}
-      </ul>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }

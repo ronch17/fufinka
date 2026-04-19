@@ -295,12 +295,12 @@ export default function Collection() {
     
 
 
-      <div className="collection flex mt-20 px-10 gap-4 mb-5">
+      <div className="collection flex mt-20 px-10 gap-4 mb-5 max-md:flex-col">
 
         <Form
           key={filterFormKey}
           method="get"
-          className="flex flex-col gap-4 w-64 border-l-1 border-gray-200 pl-4"
+          className="flex flex-col gap-4 w-64 md:border-l-1 border-gray-200 pl-4"
         >
           <input type="hidden" name="sort" value={sortParam} />
 

@@ -64,10 +64,10 @@ export function FeaturedCollectionsGallery({
   return (
     <section className="featured-collections-gallery py-16 px-4 md:px-8 max-w-7xl mx-auto">
       {/* ניווט קטגוריות */}
-      <nav className="flex flex-wrap justify-center gap-4 mb-12">
+      <nav className="flex justify-center gap-4 md:mb-12 max-md:items-center">
         <button
           onClick={() => setSelectedIndex(0)}
-          className={`px-4 py-2 text-2xl font-medium transition ${
+          className={`px-4 py-2 max-md:text-sm max-md:px-2 text-2xl font-medium transition ${
             selectedIndex === 0
               ? 'border-b-2 border-black'
               : 'hover:opacity-70 cursor-pointer'
@@ -79,7 +79,7 @@ export function FeaturedCollectionsGallery({
           <button
             key={collection.id}
             onClick={() => setSelectedIndex(i + 1)}
-            className={`px-4 py-2 text-2xl font-medium transition cursor-pointer ${
+            className={`px-4 py-2 max-md:text-sm max-md:px-2 text-2xl font-medium transition cursor-pointer ${
               selectedIndex === i + 1
                 ? 'border-b-2 border-black'
                 : 'hover:opacity-70'
@@ -100,9 +100,9 @@ export function FeaturedCollectionsGallery({
       </div>
 
       {/* לייאאוט: שמאל - 4 מוצרים ב-2x2 (40%), ימין - מוצר גדול (60%) */}
-      <div className="grid grid-cols-2 gap-4 items-start">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
         {/* צד שמאל - 4 מוצרים ברשת 2x2 */}
-        <div className="grid grid-cols-2 grid-rows-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 grid-rows-2 gap-4">
           {gridProducts.map((product) => (
             <GalleryProductCard
               key={product.id}

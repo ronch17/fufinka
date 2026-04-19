@@ -14,7 +14,7 @@ export function FeaturedCollections({
           <Link
             key={collection.id}
             to={`/collections/${collection.handle}`}
-            className="group block px-5"
+            className="group block px-5 max-md:px-7"
           >
                    <h3 className="mt-4 text-2xl font-semibold text-center mb-4">
               {collection.title}

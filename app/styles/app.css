@@ -202,11 +202,10 @@ button.reset:hover:not(:has(> *)) {
   background: #fff;
   display: flex;
   height: var(--header-height);
-  padding: 0 1rem;
+
   position: sticky;
   top: 0;
   z-index: 9;
-  padding: 4rem;
 }
 
 .header > a {
@@ -251,7 +250,6 @@ button.reset:hover:not(:has(> *)) {
   align-items: center;
   display: flex;
   grid-gap: 1rem;
-  margin-right: auto;
 }
 
 .header-ctas > * {
@@ -279,7 +277,6 @@ button.reset:hover:not(:has(> *)) {
 
 @media (max-width: 768px) {
   .footer-columns {
-    grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
     padding: 2rem 1rem;
   }

@@ -107,7 +107,7 @@ const imageWithText2Data = mapFields(imageWithText2Fields);
 
 
   return (
-    <>
+    <div className="overflow-hidden">
 
       <ImageWithText
         className='px-10 '
@@ -146,7 +146,7 @@ const imageWithText2Data = mapFields(imageWithText2Fields);
 
     </section>
 
-    <section className="mx-auto px-3 text-center py-16 space-y-6 bg-[#D9A7B1] flex flex-col items-center justify-center">
+    <section className="mx-auto px-3 text-center py-16 space-y-6 bg-[#D9A7B1] flex flex-col items-center justify-center overflow-hidden">
 
       <QuoteIcon className="w-10 h-10 mx-auto text-black bg-white  rounded-full p-2" />
       {quoteData.title && (
@@ -177,7 +177,7 @@ const imageWithText2Data = mapFields(imageWithText2Fields);
       />
     </section>
 
-    </>
+    </div>
   );
 }
 
@@ -209,7 +209,7 @@ function Workshops({page, products}: any) {
     <section className="mx-auto px-3 py-16 space-y-6 max-w-[960px]">
        <h2 className="text-3xl font-medium text-center mb-10">בחרו את סוג הסדנה בה תרצו להשתתף
 </h2>
-<div className="grid grid-cols-2 gap-6">
+<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       {products?.nodes.map((product: WorkshopProduct) => (
         product.title === 'חיזוק שרירי היצירה' ? <div key={product.id} className="col-span-2 text-center"> <ProductItem key={product.id} product={product} /> <AddToCartButton lines={[
           {
@@ -269,7 +269,7 @@ export default function Page() {
 
       {page.handle === 'צרו-קשר' && (
         <section className="mx-auto px-3 py-16 space-y-6 ">
-          <div className="grid grid-cols-2 gap-1 justify-center items-center ">
+          <div className="grid grid-cols-1 md:grid-cols-2 max-md:gap-10 gap-1 justify-center items-center ">
             <div className="text-center flex flex-col items-center justify-center gap-5">
             <h1 className="text-4xl font-medium mb-5">סטודיו פופינקה, תל אביב</h1>
             <div className="flex flex-row gap-2 items-center justify-center w-fit cursor-pointer hover:text-[var(--color-primary)] transition-all duration-300">

@@ -42,7 +42,7 @@ export function GalleryProductCard({
   const aspectClass = size === 'large' ? 'aspect-[4/5]' : 'aspect-square';
 
   return (
-    <div className="group relative overflow-hidden h-fit cursor-pointer">
+    <div className="group relative overflow-hidden h-fit cursor-pointer max-md:px-5">
       <div className={`relative ${aspectClass} w-full`}>
         <Link
           to={variantUrl}
