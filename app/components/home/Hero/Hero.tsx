@@ -33,7 +33,7 @@ export function Hero({
         )}
       </AnimatePresence>
 
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3">
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 cursor-pointer ">
         {slides.map((slide, i) => (
           <button
             key={slide.image}

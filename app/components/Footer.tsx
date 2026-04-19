@@ -70,11 +70,11 @@ export function Footer({
     ].filter((item) => contactData[item.key]);
 
       return (
-          <footer className="footer bg-[#f5f5f5] text-black pt-16 pb-6">
+          <footer className="footer bg-[#f5f5f5] text-black pt-2 md:pt-16 md:pb-6">
             <div className="footer-columns">
               {/* עמודה 1: תמונה, טלפון, אימייל, סושיאל מדיה */}
               <div className="footer-column">
-                <div className="footer-brand mb-5">
+                <div className="footer-brand">
                   {header.shop.brand?.logo?.image && (
                     <Link to="/" prefetch="intent">
                       <Image
@@ -107,7 +107,7 @@ className='mix-blend-multiply'
                   </a>
                 )}
                 {socialLinks.length > 0 && (
-                  <div className="footer-social flex gap-2">
+                  <div className="footer-social flex gap-2 max-md:justify-center">
                     {socialLinks.map((link) => (
                       <a
                         key={link.key}

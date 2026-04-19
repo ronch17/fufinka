@@ -13,7 +13,7 @@
   --grid-item-width: 355px;
   --header-height: 64px;
   --color-dark: #000;
-  --color-light: #fff;
+  --color-light: #ffeff2;
   --font-family: 'GveretLevin', sans-serif;
   --color-primary: #d9a7b1;
   --color-secondary: #b4c780;
@@ -59,7 +59,7 @@ aside {
   background: var(--color-light);
   box-shadow: 0 0 50px rgba(0, 0, 0, 0.3);
   height: 100vh;
-  width: min(var(--aside-width), 100vw);
+  width: min(var(--aside-width), 70vw);
   position: fixed;
   right: calc(-1 * var(--aside-width));
   top: 0;
@@ -86,6 +86,7 @@ aside header .close {
   text-decoration: none;
   transition: all 200ms;
   width: 20px;
+  scale: 2.5;
 }
 
 aside header .close:hover {
@@ -304,7 +305,7 @@ button.reset:hover:not(:has(> *)) {
 }
 
 .footer-heading {
-  font-size: 0.875rem;
+  font-size: 1rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -417,6 +418,7 @@ button.reset:hover:not(:has(> *)) {
 
 .cart-line-inner {
   display: flex;
+  justify-content: space-around;
 }
 
 .cart-line img {
@@ -430,7 +432,7 @@ button.reset:hover:not(:has(> *)) {
 }
 
 .cart-summary-aside {
-  background: white;
+  background: var(--color-light);
   border-top: 1px solid var(--color-dark);
   bottom: 0;
   padding-top: 0.75rem;

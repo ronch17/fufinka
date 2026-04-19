@@ -63,7 +63,7 @@ export function CartLineItem({
             </p>
           </Link>
           <ProductPrice price={line?.cost?.totalAmount} />
-          <ul>
+          {/* <ul>
             {selectedOptions.map((option) => (
               <li key={option.name}>
                 <small>
@@ -71,7 +71,7 @@ export function CartLineItem({
                 </small>
               </li>
             ))}
-          </ul>
+          </ul> */}
           <CartLineQuantity line={line} />
         </div>
       </div>
@@ -109,8 +109,9 @@ function CartLineQuantity({line}: {line: CartLine}) {
   const nextQuantity = Number((quantity + 1).toFixed(0));
 
   return (
-    <div className="cart-line-quantity">
-      <small>Quantity: {quantity} &nbsp;&nbsp;</small>
+    <>
+    <div className="cart-line-quantity flex items-center ">
+      <small className="font-medium text-lg">כמות: {quantity} &nbsp;&nbsp;</small>
       <CartLineUpdateButton lines={[{id: lineId, quantity: prevQuantity}]}>
         <button
           aria-label="Decrease quantity"
@@ -131,10 +132,12 @@ function CartLineQuantity({line}: {line: CartLine}) {
         >
           <span>&#43;</span>
         </button>
+        
       </CartLineUpdateButton>
       &nbsp;
-      <CartLineRemoveButton lineIds={[lineId]} disabled={!!isOptimistic} />
     </div>
+          <CartLineRemoveButton lineIds={[lineId]} disabled={!!isOptimistic} />
+</>
   );
 }
 
@@ -158,7 +161,7 @@ function CartLineRemoveButton({
       inputs={{lineIds}}
     >
       <button disabled={disabled} type="submit">
-        Remove
+        הסר
       </button>
     </CartForm>
   );

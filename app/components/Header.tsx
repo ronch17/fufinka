@@ -9,6 +9,7 @@ import {
 import type {HeaderQuery, CartApiQueryFragment} from 'storefrontapi.generated';
 import {useAside} from '~/components/Aside';
 import { Search, ShoppingCart, Menu } from 'lucide-react';
+import { AnnouncementBar } from './AnnouncementBar';
 
 interface HeaderProps {
   header: HeaderQuery;
@@ -28,6 +29,8 @@ export function Header({
   const {shop, menu} = header;
 
   return (
+  <>
+    <AnnouncementBar />
     <header className="header max-md:flex-row-reverse max-md:p-4 max-md:py-16 md:p-16">
       <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
     <Image
@@ -48,6 +51,7 @@ export function Header({
       />
       <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
     </header>
+    </>
   );
 }
 
@@ -67,7 +71,7 @@ export function HeaderMenu({
 
   return (
     <nav className={`${className} ${className === 'header-menu-desktop' ? 'w-full justify-center' : ''} ml-auto`} role="navigation">
-      {viewport === 'mobile' && (
+      {/* {viewport === 'mobile' && (
         <NavLink
           end
           onClick={close}
@@ -77,7 +81,7 @@ export function HeaderMenu({
         >
           Home
         </NavLink>
-      )}
+      )} */}
       {(menu || FALLBACK_HEADER_MENU).items.map((item) => {
         if (!item.url) return null;
 

@@ -5,6 +5,8 @@ import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
 import {ProductItem} from '~/components/ProductItem';
 import type {ProductItemFragment} from 'storefrontapi.generated';
+import sectionBg from '~/assets/products-background.jpeg';
+import { Breadcrumbs } from '~/components/Breadcrumb';
 
 export const meta: Route.MetaFunction = ({data}) => {
   return [{title: `Hydrogen | ${data?.collection.title ?? ''} Collection`}];
@@ -70,7 +72,18 @@ export default function Collection() {
 
   return (
     <div className="collection">
-      <h1>{collection.title}</h1>
+      <header>
+          <div className="h-64 flex flex-col items-center justify-center text-black" style={{backgroundImage: `url(${sectionBg})`, backgroundSize: 'cover'}}>
+          <h1 className='text-4xl font-medium md:text-5xl mb-5'>{collection.title}</h1>
+          <Breadcrumbs
+            className='text-black text-2xl font-medium'
+            items={[
+              {label: 'בית', to: '/'},
+              {label: collection.title},
+            ]}
+          />
+        </div>
+      </header>
       <p className="collection-description">{collection.description}</p>
       <PaginatedResourceSection<ProductItemFragment>
         connection={collection.products}

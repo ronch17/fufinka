@@ -352,7 +352,7 @@ export default function Collection() {
               min={priceMin}
               max={priceMax}
               defaultValue={maxPriceParam}
-              className="range range-secondary absolute z-2"
+              className="range range-error absolute z-2 "
               onChange={(e) =>
                 applyFiltersFromForm(e.currentTarget.form!)
               }
