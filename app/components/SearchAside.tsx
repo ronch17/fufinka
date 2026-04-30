@@ -4,6 +4,7 @@ import { Aside } from "./Aside";
 import { useFetcher } from "react-router";
 import type { PredictiveSearchReturn } from "~/lib/search";
 import { useId } from "react";
+import {Loader2 } from 'lucide-react';
 
 function SearchAside() {
   const fetcher = useFetcher<PredictiveSearchReturn>(); // 👈 כאן
@@ -32,7 +33,7 @@ function SearchAside() {
     const {products} = items;
 
     if (state === 'loading' && term.current) {
-      return <div>Loading...</div>;
+      return <div><Loader2 className="w-4 h-4" /> Loading...</div>;
     }
 
     if (!products.length && term.current) {

@@ -9,6 +9,7 @@ import type {
   CartApiQueryFragment,
   CartLineFragment,
 } from 'storefrontapi.generated';
+import {Minus, Plus, Trash2 } from 'lucide-react';
 
 export type CartLine = OptimisticCartLine<CartApiQueryFragment>;
 
@@ -37,8 +38,18 @@ export function CartLineItem({
   return (
     <li key={id} className="cart-line">
       <div className="cart-line-inner">
+            <Link
+            prefetch="intent"
+            to={lineItemUrl}
+            onClick={() => {
+              if (layout === 'aside') {
+                close();
+              }
+            }}
+          >
         {image && (
           <Image
+            className="cursor-pointer"
             alt={title}
             aspectRatio="1/1"
             data={image}
@@ -47,6 +58,7 @@ export function CartLineItem({
             width={100}
           />
         )}
+        </Link>
 
         <div>
           <Link
@@ -59,7 +71,7 @@ export function CartLineItem({
             }}
           >
             <p>
-              <strong>{product.title}</strong>
+              <strong className="font-[GveretLevin]">{product.title}</strong>
             </p>
           </Link>
           <ProductPrice price={line?.cost?.totalAmount} />
@@ -114,23 +126,25 @@ function CartLineQuantity({line}: {line: CartLine}) {
       <small className="font-medium text-lg">כמות: {quantity} &nbsp;&nbsp;</small>
       <CartLineUpdateButton lines={[{id: lineId, quantity: prevQuantity}]}>
         <button
+          
           aria-label="Decrease quantity"
           disabled={quantity <= 1 || !!isOptimistic}
           name="decrease-quantity"
           value={prevQuantity}
         >
-          <span>&#8722; </span>
+          <Minus className="cursor-pointer" />
         </button>
       </CartLineUpdateButton>
       &nbsp;
       <CartLineUpdateButton lines={[{id: lineId, quantity: nextQuantity}]}>
         <button
+          className="cursor-pointer"
           aria-label="Increase quantity"
           name="increase-quantity"
           value={nextQuantity}
           disabled={!!isOptimistic}
         >
-          <span>&#43;</span>
+          <Plus  />
         </button>
         
       </CartLineUpdateButton>
@@ -160,8 +174,8 @@ function CartLineRemoveButton({
       action={CartForm.ACTIONS.LinesRemove}
       inputs={{lineIds}}
     >
-      <button disabled={disabled} type="submit">
-        הסר
+      <button className="flex items-center gap-2 text-sm cursor-pointer" disabled={disabled} type="submit">
+        הסר <Trash2 className="w-4 h-4" />
       </button>
     </CartForm>
   );

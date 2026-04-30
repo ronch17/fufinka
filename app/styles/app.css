@@ -418,7 +418,8 @@ button.reset:hover:not(:has(> *)) {
 
 .cart-line-inner {
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-start;
+  gap: 1rem;
 }
 
 .cart-line img {

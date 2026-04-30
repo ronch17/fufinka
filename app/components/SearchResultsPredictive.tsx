@@ -131,8 +131,8 @@ function SearchResultsPredictiveCollections({
   if (!collections.length) return null;
 
   return (
-    <div className="predictive-search-result" key="collections">
-      <h5>Collections</h5>
+    <div className="predictive-search-result space-y-2 pr-2 mt-4" key="collections">
+      <h5 className="text-2xl font-bold">מוצרים</h5>
       <ul>
         {collections.map((collection) => {
           const collectionUrl = urlWithTrackingParams({
@@ -143,17 +143,17 @@ function SearchResultsPredictiveCollections({
 
           return (
             <li className="predictive-search-result-item" key={collection.id}>
-              <Link onClick={closeSearch} to={collectionUrl}>
+              <Link className="flex items-center gap-3" onClick={closeSearch} to={collectionUrl}>
                 {collection.image?.url && (
                   <Image
                     alt={collection.image.altText ?? ''}
                     src={collection.image.url}
-                    width={50}
-                    height={50}
+                    width={100}
+                    height={100}
                   />
                 )}
                 <div>
-                  <span>{collection.title}</span>
+                  <span className='text-2xl'>{collection.title}</span>
                 </div>
               </Link>
             </li>
@@ -205,8 +205,8 @@ function SearchResultsPredictiveProducts({
   if (!products.length) return null;
 
   return (
-    <div className="predictive-search-result" key="products">
-      <h5>Products</h5>
+    <div className="predictive-search-result space-y-2 pr-2 mt-4" key="products">
+      <h5 className="text-2xl font-bold ">מוצרים</h5>
       <ul>
         {products.map((product) => {
           const productUrl = urlWithTrackingParams({
@@ -219,17 +219,17 @@ function SearchResultsPredictiveProducts({
           const image = product?.selectedOrFirstAvailableVariant?.image;
           return (
             <li className="predictive-search-result-item" key={product.id}>
-              <Link to={productUrl} onClick={closeSearch}>
+              <Link className="flex items-center gap-2 border border-[var(--color-primary)] rounded-md " to={productUrl} onClick={closeSearch}>
                 {image && (
                   <Image
                     alt={image.altText ?? ''}
                     src={image.url}
-                    width={50}
-                    height={50}
+                    width={100}
+                    height={100}
                   />
                 )}
                 <div>
-                  <p>{product.title}</p>
+                  <p className='text-2xl'>{product.title}</p>
                   <small>{price && <Money data={price} />}</small>
                 </div>
               </Link>

@@ -15,7 +15,7 @@ export function CartSummary({cart, layout}: CartSummaryProps) {
     layout === 'page' ? 'cart-summary-page' : 'cart-summary-aside';
 
   return (
-    <div aria-labelledby="cart-summary" className={className}>
+    <div aria-labelledby="cart-summary" className={`${className} p-4 space-y-2 flex flex-col`} >
       <h4>סך הכל</h4>
       <dl className="cart-subtotal gap-2">
         <dt>סכום סופי</dt>
@@ -27,8 +27,8 @@ export function CartSummary({cart, layout}: CartSummaryProps) {
           )}
         </dd>
       </dl>
-      <CartDiscounts discountCodes={cart?.discountCodes} />
-      <CartGiftCard giftCardCodes={cart?.appliedGiftCards} />
+      {/* <CartDiscounts discountCodes={cart?.discountCodes} />
+      <CartGiftCard giftCardCodes={cart?.appliedGiftCards} /> */}
       <CartCheckoutActions checkoutUrl={cart?.checkoutUrl} />
     </div>
   );
@@ -38,9 +38,9 @@ function CartCheckoutActions({checkoutUrl}: {checkoutUrl?: string}) {
   if (!checkoutUrl) return null;
 
   return (
-    <Button variant="primary" size="lg">
+    <Button variant="artistic" size="lg">
       <a href={checkoutUrl} target="_self">
-        <p>המשך לקנייה &rarr;</p>
+        <p>לרכישה</p>
       </a>
     </Button>
   );

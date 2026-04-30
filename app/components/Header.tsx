@@ -1,5 +1,5 @@
 import {Suspense} from 'react';
-import {Await, NavLink, useAsyncValue} from 'react-router';
+import {Await, NavLink, useAsyncValue, useFetcher} from 'react-router';
 import {
   type CartViewPayload,
   useAnalytics,
@@ -178,17 +178,20 @@ function CartBadge({count}: {count: number | null}) {
 function CartToggle({cart}: Pick<HeaderProps, 'cart'>) {
   return (
     <Suspense fallback={<CartBadge count={null} />}>
-      <Await resolve={cart}>
-        <CartBanner />
-      </Await>
+    <Await resolve={cart}>
+  {(cartData) => <CartBanner key={cartData?.id} cart={cartData} />}
+</Await>
     </Suspense>
   );
 }
 
-function CartBanner() {
-  const originalCart = useAsyncValue() as CartApiQueryFragment | null;
-  const cart = useOptimisticCart(originalCart);
-  return <CartBadge count={cart?.totalQuantity ?? 0} />;
+function CartBanner({cart }: {cart: CartApiQueryFragment | null}) {
+  const fetcher = useFetcher({key: 'cart'});
+
+  const optimisticCart =
+    fetcher.data?.cart ?? cart;
+
+  return <CartBadge count={optimisticCart?.totalQuantity ?? 0} />;
 }
 
 const FALLBACK_HEADER_MENU = {

@@ -300,7 +300,7 @@ export default function Collection() {
         <Form
           key={filterFormKey}
           method="get"
-          className="flex flex-col gap-4 w-64 md:border-l-1 border-gray-200 pl-4"
+          className="flex flex-col gap-4 w-64 md:border-l-1 border-gray-200 pl-4 max-md:w-full"
         >
           <input type="hidden" name="sort" value={sortParam} />
 
@@ -352,7 +352,7 @@ export default function Collection() {
               min={priceMin}
               max={priceMax}
               defaultValue={maxPriceParam}
-              className="range range-error absolute z-2 "
+              className="range  absolute z-2 text-[var(--color-primary)]"
               onChange={(e) =>
                 applyFiltersFromForm(e.currentTarget.form!)
               }

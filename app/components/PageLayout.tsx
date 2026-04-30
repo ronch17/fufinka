@@ -15,6 +15,8 @@ import {
 } from '~/components/SearchFormPredictive';
 import {SearchResultsPredictive} from '~/components/SearchResultsPredictive';
 import type {PredictiveSearchReturn} from '~/lib/search';
+import { Loader2 } from 'lucide-react';
+import { Button } from './Button';
 
 
 
@@ -63,8 +65,8 @@ export function PageLayout({
 
 function CartAside({cart}: {cart: PageLayoutProps['cart']}) {
   return (
-    <Aside type="cart" heading="CART">
-      <Suspense fallback={<p>Loading cart ...</p>}>
+    <Aside type="cart" heading="עגלת קניות">
+      <Suspense fallback={<p className="text-lg"><Loader2 className="w-4 h-4 animate-spin " /> טוען עגלה ...</p>}>
         <Await resolve={cart}>
           {(cart) => {
             return <CartMain cart={cart} layout="aside" />;
@@ -80,21 +82,40 @@ function SearchAside() {
   const queriesDatalistId = useId();
 
   return (
-    <Aside type="search" heading="SEARCH">
-      <div className="predictive-search">
+    <Aside type="search" heading="חיפוש">
+      <div className="predictive-search" >
         <SearchFormPredictive fetcher={fetcher}>
           {({fetchResults, goToSearch, inputRef}) => (
             <>
+                          <label className="input input-primary" htmlFor="search">
+  <svg className="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <g
+      strokeLinejoin="round"
+      strokeLinecap="round"
+      strokeWidth="2.5"
+      fill="none"
+      stroke="currentColor"
+    >
+      <circle cx="11" cy="11" r="8"></circle>
+      <path d="m21 21-4.3-4.3"></path>
+    </g>
+  </svg>
               <input
                 name="q"
                 onChange={fetchResults}
                 onFocus={fetchResults}
                 ref={inputRef}
                 type="search"
-                placeholder="חיפוש..."
+                placeholder="חפשו מוצר..."
                 list={queriesDatalistId}
+              
               />
-              <button onClick={goToSearch}>Search</button>
+              </label>
+
+
+              {/* <button onClick={goToSearch}>חיפוש</button> */}
+
+
             </>
           )}
         </SearchFormPredictive>
@@ -142,9 +163,9 @@ function SearchAside() {
                     onClick={closeSearch}
                     to={`${SEARCH_ENDPOINT}?q=${term.current}`}
                   >
-                    <p>
-                      View all results for <q>{term.current}</q>
-                    </p>
+                    <Button variant="artistic">
+                      הצג את כל התוצאות עבור <q>{term.current}</q>
+                    </Button>
                   </Link>
                 ) : null}
               </>
