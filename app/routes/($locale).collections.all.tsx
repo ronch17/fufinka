@@ -153,16 +153,10 @@ async function loadCriticalData({context, request}: Route.LoaderArgs) {
    * so checkbox lists built only from the page would disappear.
    */
   const tagNodes = tagsData?.productTags?.nodes?.filter(Boolean) ?? [];
-  const allTags: string[] =
-    tagNodes.length > 0
-      ? [...tagNodes].sort((a, b) => a.localeCompare(b, 'he'))
-      : Array.from(
-          new Set<string>(
-            products.nodes.flatMap((p: {tags?: string[] | null}) =>
-              p.tags ? p.tags : [],
-            ),
-          ),
-        ).sort((a, b) => a.localeCompare(b, 'he'));
+  const tagsFromCurrentPage = products.nodes.flatMap((p) => p.tags || []);
+const allTags = Array.from(new Set([...tagNodes, ...tagsFromCurrentPage]))
+  .filter(Boolean)
+  .sort((a, b) => a.localeCompare(b, 'he'));
 
   const filteredProducts = {
     ...products,
@@ -170,8 +164,8 @@ async function loadCriticalData({context, request}: Route.LoaderArgs) {
       const price = Number(p.priceRange.minVariantPrice.amount);
       const inPriceRange = price >= minPriceParam && price <= maxPriceParam;
       const hasSelectedTag =
-        selectedTags.length === 0 ||
-        p.tags?.some((tag: string) => selectedTags.includes(tag));
+  selectedTags.length === 0 ||
+  p.tags?.some((tag: string) => selectedTags.includes(tag));
       return inPriceRange && hasSelectedTag;
     }),
   };
@@ -274,6 +268,8 @@ export default function Collection() {
 
     setSearchParams(next);
   }, 400);
+
+  console.log(allTags);
 
   return (
     <>

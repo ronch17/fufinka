@@ -160,8 +160,8 @@ const image = getField2(testimonial.fields, "image");
                 />
               )}
 
-              <span className="font-semibold text-sm text-neutral-900">
-                — {author}
+              <span className="font-semibold text-xl text-neutral-900">
+               {author}
               </span>
             </div>
 

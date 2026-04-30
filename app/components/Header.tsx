@@ -94,7 +94,7 @@ export function HeaderMenu({
             : item.url;
         return (
           <NavLink
-            className="header-menu-item pb-2 text-2xl max-md:w-fit"
+            className="header-menu-item pb-2 text-lg max-md:w-fit"
             end
             key={item.id}
             onClick={close}

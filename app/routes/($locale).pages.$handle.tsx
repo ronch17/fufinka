@@ -110,7 +110,7 @@ const imageWithText2Data = mapFields(imageWithText2Fields);
     <div className="overflow-hidden">
 
       <ImageWithText
-        className='px-10 '
+        className='px-10'
         image={imageWithTextData.image}
         title={imageWithTextData.title}
         text={ imageWithTextData.text }
@@ -118,10 +118,10 @@ const imageWithText2Data = mapFields(imageWithText2Fields);
         buttonLink="/"
       />
 
-   <section className="relative h-[70vh] overflow-hidden my-20">
+   <section className="relative h-[85vh] overflow-hidden my-20">
 <Video
   data={videoRef}
-  className="absolute inset-0 w-full h-full object-cover"
+  className="absolute inset-0 w-full h-full object-cover object-[0 30%]"
   autoPlay
   muted
   loop
@@ -202,26 +202,40 @@ function Workshops({page, products}: any) {
 
     <section className="mx-auto px-3 py-16 space-y-6 flex flex-col items-center justify-center max-w-[1300px]">
       {imagesFields.map((image) => (
-        <Image data={image.image} alt={image.image.altText} width={image.image.width} height={image.image.height} key={image.image.id} className="w-full" />
+        <Image data={image.image} alt={image.image.altText} width={image.image.width} height={image.image.height} key={image.image.id} className="w-full h-[410px] object-cover object-[0_72%]" />
       ))}
     </section>
 
-    <section className="mx-auto px-3 py-16 space-y-6 max-w-[960px]">
-       <h2 className="text-3xl font-medium text-center mb-10">בחרו את סוג הסדנה בה תרצו להשתתף
-</h2>
-<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      {products?.nodes.map((product: WorkshopProduct) => (
-        product.title === 'חיזוק שרירי היצירה' ? <div key={product.id} className="col-span-2 text-center"> <ProductItem key={product.id} product={product} /> <AddToCartButton lines={[
-          {
-            merchandiseId: product.id,
-            quantity: 1,
-          },
-          ]} variant="artistic" onClick={() => open('cart')}
-
->מחלום להוויה</AddToCartButton> </div> : <ProductItem key={product.id} product={product} />
-
-      ))}
+    <section className="mx-auto max-w-6xl px-3 py-16">
+      <h2 className="mb-10 text-center text-3xl font-medium">
+        בחרו את סוג הסדנה בה תרצו להשתתף
+      </h2>
+      <div className="flex flex-wrap items-start justify-center gap-6 md:gap-8">
+        {products?.nodes.map((product: WorkshopProduct) => (
+          <div
+            key={product.id}
+            className="flex w-44 shrink-0 flex-col items-center gap-3 text-center sm:w-48 md:w-80"
+          >
+            <ProductItem product={product} />
+            {/* {product.title === 'חיזוק שרירי היצירה' ? (
+              <AddToCartButton
+                lines={[
+                  {
+                    merchandiseId: product.id,
+                    quantity: 1,
+                  },
+                ]}
+                variant="artistic"
+                onClick={() => open('cart')}
+              >
+                מחלום להוויה
+              </AddToCartButton>
+            ) : null} */}
+          </div>
+          
+        ))}
       </div>
+      
     </section>
 
       <section className="mx-auto py-16 space-y-6 ">
@@ -245,7 +259,7 @@ export default function Page() {
   return (
     <div className="page">
       <header>
-        <div className="h-64 flex flex-col items-center justify-center text-black" style={{backgroundImage: `url(${page.pageTitleBg?.reference?.image?.url})`, backgroundSize: 'cover'}}>
+        <div className="h-64 flex flex-col items-center justify-center text-black " style={{backgroundImage: `url(${page.pageTitleBg?.reference?.image?.url})`, backgroundSize: 'cover'}}>
           <h1 className='text-4xl font-medium md:text-5xl mb-5'>{page.title}</h1>
 
       <Breadcrumbs

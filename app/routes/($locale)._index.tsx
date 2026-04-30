@@ -17,8 +17,36 @@ import {FeaturedCollections} from '~/components/home/featured-collections/Featur
 import {FeaturedCollectionsGallery} from '~/components/home/featured-collections-gallery/FeaturedCollectionsGallery';
 import { ImageWithText } from '~/components/home/image-with-text/ImageWithText';
 
-export const meta: Route.MetaFunction = () => {
-  return [{title: 'Fufinka | בית'}];
+
+
+export const meta: Route.MetaFunction = ({location}) => {
+  const title = 'Fufinka | בית';
+  const description = 'גלריית עבודות ואמנות מקורית על קנבס - פופינקה';
+  
+  // חשוב: השתמש בכתובת מלאה (Absolute URL) עבור התמונה
+  const domain = 'https://fufinka1-ef02da9369b8db104cb6.o2.myshopify.dev/'; // החלף בדומיין האמיתי שלך
+  const ogImage = `${domain}/og.png`; 
+
+  return [
+    {title},
+    {name: 'description', content: description},
+    
+    // Open Graph / Facebook
+    {property: 'og:type', content: 'website'},
+    {property: 'og:url', content: `${domain}${location.pathname}`},
+    {property: 'og:title', content: title},
+    {property: 'og:description', content: description},
+    {property: 'og:image', content: ogImage},
+    
+    // Twitter
+    {name: 'twitter:card', content: 'summary_large_image'},
+    {name: 'twitter:title', content: title},
+    {name: 'twitter:description', content: description},
+    {name: 'twitter:image', content: ogImage},
+
+    // גוגל (Thumbnail)
+    {name: 'image_src', content: ogImage},
+  ];
 };
 
 export async function loader(args: Route.LoaderArgs) {
