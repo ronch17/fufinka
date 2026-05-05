@@ -78,7 +78,6 @@ export function ProductImageGallery({
       <div className="product-image">
         <Image
           alt={active.altText || 'Product Image'}
-          aspectRatio="1/1"
           data={active}
           key={active.id}
           sizes="(min-width: 45em) 50vw, 100vw"

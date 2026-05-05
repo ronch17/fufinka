@@ -71,7 +71,7 @@ export function ImageWithText({
        {text}
       </div>
       <Link
-          to={buttonLink}
+          to="/pages/ליווי-יצירתי"
          
       >
         <Button variant="artistic" size="lg">

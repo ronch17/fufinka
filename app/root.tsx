@@ -9,7 +9,6 @@ import {
   Scripts,
   ScrollRestoration,
   useRouteLoaderData,
-  useLoaderData,
 } from 'react-router';
 import type {Route} from './+types/root';
 import favicon from '~/assets/favicon.svg';
@@ -20,28 +19,35 @@ import {PageLayout} from './components/PageLayout';
 
 export type RootLoader = typeof loader;
 
-/**
- * This is important to avoid re-fetching root queries on sub-navigations
- */
+/** נתיב הפעולה מפנה לעמוד העגלה (תומך גם ב-/HE-IL/cart) */
+function formActionTargetsCart(formAction: unknown): boolean {
+  if (typeof formAction !== 'string') return false;
+  try {
+    const pathname = formAction.startsWith('http')
+      ? new URL(formAction).pathname
+      : formAction.split('?')[0];
+    return pathname.split('/').filter(Boolean).includes('cart');
+  } catch {
+    return false;
+  }
+}
+
+/** ריענון root אחרי עדכון עגלה — העגלה נטענת ב-loader; אם RR מבקש ברירת מחדל, מאפשרים כדי שלא יפספס fetcher */
 export const shouldRevalidate: ShouldRevalidateFunction = ({
   formMethod,
+  formAction,
   currentUrl,
   nextUrl,
+  defaultShouldRevalidate,
 }) => {
-  // revalidate when a mutation is performed e.g add to cart, login...
   if (formMethod && formMethod !== 'GET') return true;
 
-  // revalidate when manually revalidating via useRevalidator
+  if (formActionTargetsCart(formAction)) return true;
+
   if (currentUrl.toString() === nextUrl.toString()) return true;
 
-  // Defaulting to no revalidation for root loader data to improve performance.
-  // When using this feature, you risk your UI getting out of sync with your server.
-  // Use with caution. If you are uncomfortable with this optimization, update the
-  // line below to `return defaultShouldRevalidate` instead.
-  // For more details see: https://remix.run/docs/en/main/route/should-revalidate
-  return false;
+  return defaultShouldRevalidate;
 };
-
 /**
  * The main stylesheets are added in the Layout component
  * to prevent a bug in development HMR updates.
@@ -67,19 +73,22 @@ export function links() {
 }
 
 export async function loader(args: Route.LoaderArgs) {
-  // Start fetching non-critical data without blocking time to first byte
   const deferredData = loadDeferredData(args);
 
-  // Await the critical data required to render initial state of the page
-  const criticalData = await loadCriticalData(args);
+  const [criticalData, cartData] = await Promise.all([
+    loadCriticalData(args),
+    args.context.cart.get(),
+  ]);
 
   const {storefront, env} = args.context;
 
   const locale = args.context.storefront.i18n;
 
-  return {  locale,
+  return {
+    locale,
     ...deferredData,
     ...criticalData,
+    cart: cartData,
     publicStoreDomain: env.PUBLIC_STORE_DOMAIN,
     shop: getShopAnalytics({
       storefront,
@@ -125,7 +134,7 @@ async function loadCriticalData({context}: Route.LoaderArgs) {
 
 
 function loadDeferredData({context}: Route.LoaderArgs) {
-  const {storefront, customerAccount, cart} = context;
+  const {storefront, customerAccount} = context;
 
   // defer the footer query (below the fold)
   const footer = storefront
@@ -148,7 +157,6 @@ function loadDeferredData({context}: Route.LoaderArgs) {
     .catch(() => null);
 
   return {
-    cart: cart.get(),
     isLoggedIn: customerAccount.isLoggedIn(),
     footer,
     footerContact,
@@ -157,12 +165,11 @@ function loadDeferredData({context}: Route.LoaderArgs) {
 
 export function Layout({children}: {children?: React.ReactNode}) {
   const nonce = useNonce();
-    const {locale} = useLoaderData<typeof loader>();
-
-
+  
+  // אל תמשוך כאן נתונים עם useLoaderData! 
+  // נשתמש בערכי ברירת מחדל בסיסיים ל-HTML
   return (
-    <html lang={locale.language.toLowerCase()}
-    dir={locale.language === 'HE' ? 'rtl' : 'ltr'} data-theme="light">
+    <html lang="he" dir="rtl" data-theme="light">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -182,11 +189,9 @@ export function Layout({children}: {children?: React.ReactNode}) {
 
 export default function App() {
   const data = useRouteLoaderData<RootLoader>('root');
-
-
-  if (!data) {
-    return <Outlet />;
-  }
+  
+  // אם אין דאטה, נציג רק את התוכן בלי המעטפת של PageLayout
+  if (!data) return <Outlet />;
 
   return (
     <Analytics.Provider

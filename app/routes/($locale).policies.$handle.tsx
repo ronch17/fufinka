@@ -1,6 +1,8 @@
-import {Link, useLoaderData} from 'react-router';
+import {useLoaderData} from 'react-router';
 import type {Route} from './+types/policies.$handle';
 import {type Shop} from '@shopify/hydrogen/storefront-api-types';
+import {Breadcrumbs} from '~/components/Breadcrumb';
+import policiesBg from '~/assets/policies.jpeg';
 
 type SelectedPolicies = keyof Pick<
   Shop,
@@ -8,7 +10,7 @@ type SelectedPolicies = keyof Pick<
 >;
 
 export const meta: Route.MetaFunction = ({data}) => {
-  return [{title: `Hydrogen | ${data?.policy.title ?? ''}`}];
+  return [{title: `Fufinka | ${data?.policy.title ?? 'מדיניות'}`}];
 };
 
 export async function loader({params, context}: Route.LoaderArgs) {
@@ -45,16 +47,40 @@ export default function Policy() {
   const {policy} = useLoaderData<typeof loader>();
 
   return (
-    <div className="policy">
-      <br />
-      <br />
-      <div>
-        <Link to="/policies">← Back to Policies</Link>
+    <main className="policy-page bg-[var(--color-primary)]/10 min-h-[60vh]">
+ 
+       
+          <div
+        className="relative flex h-64 flex-col items-center justify-center overflow-hidden text-black"
+        style={{
+          backgroundImage: `url(${policiesBg})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
+        <div className="absolute inset-0 bg-white/55 backdrop-blur-[1px]" aria-hidden />
+        <h1 className="relative z-1 mb-5 text-4xl font-medium md:text-5xl">
+          מסמכים משפטיים
+        </h1>
+        <Breadcrumbs
+          className="relative z-1 mb-0! justify-start text-[15px] md:text-base"
+          listClassName="flex-wrap gap-y-1 text-right"
+          items={[
+            {label: 'בית', to: '/'},
+            {label: 'מסמכים משפטיים', to: '/policies'},
+            {label: policy.title},
+          ]}
+        />
       </div>
-      <br />
-      <h1>{policy.title}</h1>
-      <div dangerouslySetInnerHTML={{__html: policy.body}} />
-    </div>
+     <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:max-w-4xl lg:px-8 lg:py-14">
+      
+
+        <article
+          className="policy-html rounded-2xl border border-gray-200/80 bg-white px-5 py-8 shadow-[0_1px_3px_rgba(0,0,0,0.06)] sm:px-8 sm:py-10 md:px-12 md:py-12"
+          dangerouslySetInnerHTML={{__html: policy.body}}
+        />
+      </div>
+    </main>
   );
 }
 

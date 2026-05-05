@@ -1,5 +1,5 @@
-import {Await, Link, useFetcher} from 'react-router';
-import {Suspense, useId} from 'react';
+import {Link, useFetcher} from 'react-router';
+import {useId} from 'react';
 import type {
   CartApiQueryFragment,
   FooterQuery,
@@ -7,7 +7,7 @@ import type {
 } from 'storefrontapi.generated';
 import {Aside} from '~/components/Aside';
 import {Footer} from '~/components/Footer';
-import {Header, HeaderMenu} from '~/components/Header';
+import {Header, HeaderMenu} from '~/components/Header'; 
 import {CartMain} from '~/components/CartMain';
 import {
   SEARCH_ENDPOINT,
@@ -15,13 +15,13 @@ import {
 } from '~/components/SearchFormPredictive';
 import {SearchResultsPredictive} from '~/components/SearchResultsPredictive';
 import type {PredictiveSearchReturn} from '~/lib/search';
+import {Button} from './Button';
 import { Loader2 } from 'lucide-react';
-import { Button } from './Button';
 
 
 
 interface PageLayoutProps {
-  cart: Promise<CartApiQueryFragment | null>;
+  cart: CartApiQueryFragment | null;
   footer: Promise<FooterQuery | null>;
   header: HeaderQuery;
   isLoggedIn: Promise<boolean>;
@@ -47,7 +47,6 @@ export function PageLayout({
       {header && (
         <Header
           header={header}
-          cart={cart}
           isLoggedIn={isLoggedIn}
           publicStoreDomain={publicStoreDomain}
         />
@@ -66,13 +65,7 @@ export function PageLayout({
 function CartAside({cart}: {cart: PageLayoutProps['cart']}) {
   return (
     <Aside type="cart" heading="עגלת קניות">
-      <Suspense fallback={<p className="text-lg"><Loader2 className="w-4 h-4 animate-spin " /> טוען עגלה ...</p>}>
-        <Await resolve={cart}>
-          {(cart) => {
-            return <CartMain cart={cart} layout="aside" />;
-          }}
-        </Await>
-      </Suspense>
+      <CartMain cart={cart} layout="aside" />
     </Aside>
   );
 }
@@ -84,7 +77,7 @@ function SearchAside() {
   return (
     <Aside type="search" heading="חיפוש">
       <div className="predictive-search" >
-        <SearchFormPredictive fetcher={fetcher}>
+        <SearchFormPredictive className=' mb-8' fetcher={fetcher}>
           {({fetchResults, goToSearch, inputRef}) => (
             <>
                           <label className="input input-primary" htmlFor="search">
@@ -125,7 +118,7 @@ function SearchAside() {
             const {articles, collections, pages, products, queries} = items;
 
             if (state === 'loading' && term.current) {
-              return <div>Loading...</div>;
+              return <div className="flex items-center justify-center gap-2"><Loader2 className="w-4 h-4 animate-spin text-primary text-2xl " /> טוען תוצאות...</div>;
             }
 
             if (!total) {
@@ -187,7 +180,7 @@ function MobileMenuAside({
   return (
     header.menu &&
     header.shop.primaryDomain?.url && (
-      <Aside type="mobile" heading="MENU">
+      <Aside type="mobile" heading="תפריט">
         <HeaderMenu
           menu={header.menu}
           viewport="mobile"

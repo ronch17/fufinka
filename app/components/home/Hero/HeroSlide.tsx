@@ -8,6 +8,7 @@ import {
   transition,
 } from '~/components/animations';
 import { Button } from '~/components/Button';
+import { Link } from 'react-router';
 
 
 export function HeroSlide({homepage}: {homepage: Slides}) {
@@ -58,10 +59,11 @@ export function HeroSlide({homepage}: {homepage: Slides}) {
       >
         <h1 className="text-6xl font-bold max-sm:text-4xl">{homepage.title}</h1>
         <div className="w-10 border-b-1  border-[var(--color-secondary)]" />
-
+        <Link to="/collections/all">
         <Button variant="artistic" size="lg" className="max-sm:text-sm max-sm:px-4 max-sm:mb-15">
           {homepage.button}
         </Button>
+        </Link>
       </motion.div>
     </motion.section>
   );

@@ -560,10 +560,14 @@ button.reset:hover:not(:has(> *)) {
   grid-gap: 1.5rem;
   grid-template-columns: repeat(auto-fit, minmax(var(--grid-item-width), 1fr));
   margin-bottom: 2rem;
+  text-align: center;
+  font-size: 1.5rem;
+  padding-inline: 1rem;
 }
 
 .collection-item img {
   height: auto;
+  margin-bottom: 1rem;
 }
 
 /*
@@ -744,4 +748,84 @@ button.reset:hover:not(:has(> *)) {
   display: flex;
   gap: 0.75rem;
   flex-wrap: wrap;
+}
+
+/* HTML body from Shopify ShopPolicy — routes/($locale).policies.$handle */
+.policy-html {
+  font-size: clamp(1rem, 0.96rem + 0.2vw, 1.0625rem);
+  line-height: 1.8;
+  color: #374151;
+  overflow-wrap: anywhere;
+}
+
+.policy-html > *:first-child {
+  margin-top: 0;
+}
+
+.policy-html h1,
+.policy-html h2,
+.policy-html h3,
+.policy-html h4 {
+  font-weight: 600;
+  color: #111827;
+  line-height: 1.35;
+  margin-top: 1.75em;
+  margin-bottom: 0.5em;
+}
+
+.policy-html h1 {
+  font-size: 1.5rem;
+}
+
+.policy-html h2 {
+  font-size: 1.25rem;
+}
+
+.policy-html h3 {
+  font-size: 1.1rem;
+}
+
+.policy-html p {
+  margin: 0 0 1em;
+}
+
+.policy-html ul,
+.policy-html ol {
+  margin: 0.75em 0 1em;
+  padding-inline-start: 1.4em;
+}
+
+.policy-html li {
+  margin: 0.35em 0;
+}
+
+.policy-html a {
+  color: var(--color-primary, #d9a7b1);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.policy-html a:focus-visible {
+  outline: 2px solid var(--color-primary, #d9a7b1);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.policy-html strong {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.policy-html table {
+  width: 100%;
+  display: block;
+  overflow-x: auto;
+  margin: 1.25em 0;
+  font-size: 0.95em;
+}
+
+.policy-html td,
+.policy-html th {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #e5e7eb;
 }

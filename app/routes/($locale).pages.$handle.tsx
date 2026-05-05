@@ -1,5 +1,8 @@
 import {useLoaderData} from 'react-router';
 import type {Route} from './+types/pages.$handle';
+import type {WorkshopsProductsQuery} from 'storefrontapi.generated';
+
+type WorkshopProduct = WorkshopsProductsQuery['products']['nodes'][number];
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
 import { Breadcrumbs } from '~/components/Breadcrumb';
 import { ImageWithText } from '~/components/about/image-with-text/ImageWithText';
@@ -214,7 +217,7 @@ function Workshops({page, products}: any) {
         {products?.nodes.map((product: WorkshopProduct) => (
           <div
             key={product.id}
-            className="flex w-44 shrink-0 flex-col items-center gap-3 text-center sm:w-48 md:w-80"
+            className="flex shrink-0 flex-col items-center gap-3 text-center w-80 sm:w-48 md:w-80"
           >
             <ProductItem product={product} />
             {/* {product.title === 'חיזוק שרירי היצירה' ? (
@@ -259,7 +262,7 @@ export default function Page() {
   return (
     <div className="page">
       <header>
-        <div className="h-64 flex flex-col items-center justify-center text-black " style={{backgroundImage: `url(${page.pageTitleBg?.reference?.image?.url})`, backgroundSize: 'cover'}}>
+        <div className="h-64 flex flex-col items-center justify-center text-black bg-cover bg-center " style={{backgroundImage: `url(${page.pageTitleBg?.reference?.image?.url})`}}>
           <h1 className='text-4xl font-medium md:text-5xl mb-5'>{page.title}</h1>
 
       <Breadcrumbs
@@ -492,10 +495,16 @@ query WorkshopsProducts(
     title
     handle
     availableForSale
+    selectedOrFirstAvailableVariant {
+      id
+    }
 
     featuredImage {
+      id
       url
       altText
+      width
+      height
     }
 
     priceRange {
@@ -503,11 +512,9 @@ query WorkshopsProducts(
         amount
         currencyCode
       }
-    }
-
-    variants(first: 1) {
-      nodes {
-        id
+      maxVariantPrice {
+        amount
+        currencyCode
       }
     }
   }

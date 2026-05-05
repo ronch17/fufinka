@@ -99,7 +99,7 @@ function CartEmpty({
       </p>
       <br />
       <Button variant="artistic">
-      <Link to="/collections" onClick={close} prefetch="viewport">
+      <Link to="/collections/all" onClick={close} prefetch="viewport">
         להמשך קנייה ←
         </Link>
         </Button>

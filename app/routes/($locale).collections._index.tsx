@@ -3,7 +3,8 @@ import type {Route} from './+types/collections._index';
 import {getPaginationVariables, Image} from '@shopify/hydrogen';
 import type {CollectionFragment} from 'storefrontapi.generated';
 import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
-
+import collectionsBg from '~/assets/products-background.jpeg';
+import { Breadcrumbs } from '~/components/Breadcrumb';
 export async function loader(args: Route.LoaderArgs) {
   // Start fetching non-critical data without blocking time to first byte
   const deferredData = loadDeferredData(args);
@@ -47,10 +48,20 @@ export default function Collections() {
 
   return (
     <div className="collections">
-      <h1>Collections</h1>
+      <div className="h-64 flex flex-col items-center justify-center text-black bg-cover bg-center mb-10 " style={{backgroundImage: `url(${collectionsBg}) `, backgroundSize: 'cover'}}>
+        <h1 className='text-4xl font-medium md:text-5xl mb-5'>גלריית עבודות</h1>
+        <Breadcrumbs
+          className='text-black text-2xl font-medium'
+          items={[
+            {label: 'בית', to: '/'},
+            {label: 'גלריית עבודות'},
+          ]}
+        />
+      </div>
       <PaginatedResourceSection<CollectionFragment>
         connection={collections}
         resourcesClassName="collections-grid"
+        className='px-10'
       >
         {({node: collection, index}) => (
           <CollectionItem

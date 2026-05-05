@@ -102,6 +102,11 @@ export function ProductForm({
         );
       })}
       <AddToCartButton 
+        analytics={{
+          product_id: selectedVariant?.id,
+          product_name: selectedVariant?.title,
+          product_price: selectedVariant?.price,
+        }}
         disabled={!selectedVariant || !selectedVariant.availableForSale}
         onClick={() => {
           open('cart');

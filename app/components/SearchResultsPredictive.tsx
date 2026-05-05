@@ -47,6 +47,7 @@ export function SearchResultsPredictive({
   const aside = useAside();
   const {term, inputRef, fetcher, total, items} = usePredictiveSearch(externalFetcher);
 
+
   /*
    * Utility that resets the search input
    */
@@ -128,6 +129,8 @@ function SearchResultsPredictiveCollections({
   collections,
   closeSearch,
 }: PartialPredictiveSearchResult<'collections'>) {
+
+  console.log(collections);
   if (!collections.length) return null;
 
   return (
@@ -270,8 +273,8 @@ function SearchResultsPredictiveEmpty({
   }
 
   return (
-    <p>
-      No results found for <q>{term.current}</q>
+    <p className='text-center text-2xl font-bold'>
+       לא נמצאו תוצאות לחיפוש של <q>{term.current}</q>
     </p>
   );
 }

@@ -27,6 +27,8 @@ export function ProductDetailsMeta({
   const {productType, tags, vendor, publishedAt, category, collections} =
     product;
 
+  console.log(product);
+
   const categoryPath =
     category &&
     [...category.ancestors.map((a) => a.name), category.name].filter(Boolean);
@@ -65,7 +67,7 @@ export function ProductDetailsMeta({
         {categoryPath && categoryPath.length > 0 ? (
           <div>
             <dt className="text-gray-500">קטגוריה</dt>
-            <dd className="font-medium text-gray-800">{categoryPath.join(' › ')}</dd>
+            <dd className="font-medium text-gray-800">{collections.nodes[0].handle}</dd>
           </div>
         ) : null}
 
@@ -97,7 +99,7 @@ export function ProductDetailsMeta({
           </div>
         ) : null}
 
-        {collections.nodes.length > 0 ? (
+        {/* {collections.nodes.length > 0 ? (
           <div className="sm:col-span-2">
             <dt className="text-gray-500">אוספים</dt>
             <dd className="mt-1 flex flex-wrap gap-2">
@@ -112,7 +114,7 @@ export function ProductDetailsMeta({
               ))}
             </dd>
           </div>
-        ) : null}
+        ) : null} */}
 
         {tags.length > 0 ? (
           <div className="sm:col-span-2">

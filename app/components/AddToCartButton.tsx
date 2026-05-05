@@ -1,7 +1,6 @@
-import {type FetcherWithComponents, useRevalidator} from 'react-router';
 import {CartForm} from '@shopify/hydrogen';
-import {useEffect} from 'react';
-import { Button } from './Button';
+import {Button} from './Button';
+import {useCartFormRoute} from '~/hooks/use-cart-form-route';
 
 export function AddToCartButton({
   analytics,
@@ -11,38 +10,32 @@ export function AddToCartButton({
   onClick,
   variant = 'artistic',
 }) {
-  const revalidator = useRevalidator();
+  const cartRoute = useCartFormRoute();
 
   return (
-    <CartForm fetcherKey="cart" route="/cart" inputs={{lines}} action={CartForm.ACTIONS.LinesAdd}>
-      {(fetcher: FetcherWithComponents<any>) => {
-        
-        // 👇 זה הקסם
-        useEffect(() => {
-          if (fetcher.state === 'idle' && fetcher.data) {
-            revalidator.revalidate();
-          }
-        }, [fetcher.state]);
-
-        return (
-          <>
-            <input
-              name="analytics"
-              type="hidden"
-              value={JSON.stringify(analytics)}
-            />
-            <Button
-              variant={variant}
-              size="lg"
-              type="submit"
-              onClick={onClick}
-              disabled={disabled ?? fetcher.state !== 'idle'}
-            >
-              {children}
-            </Button>
-          </>
-        );
-      }}
+    <CartForm
+      route={cartRoute}
+      inputs={{lines}} 
+      action={CartForm.ACTIONS.LinesAdd}
+    >
+      {(fetcher) => (
+        <>
+          <input
+            name="analytics"
+            type="hidden"
+            value={JSON.stringify(analytics)}
+          />
+          <Button
+            variant={variant}
+            size="lg"
+            type="submit"
+            onClick={onClick}
+            disabled={disabled || fetcher.state !== 'idle'}
+          >
+            {fetcher.state !== 'idle' ? 'מוסיף...' : children}
+          </Button>
+        </>
+      )}
     </CartForm>
   );
 }

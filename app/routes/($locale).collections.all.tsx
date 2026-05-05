@@ -164,8 +164,8 @@ const allTags = Array.from(new Set([...tagNodes, ...tagsFromCurrentPage]))
       const price = Number(p.priceRange.minVariantPrice.amount);
       const inPriceRange = price >= minPriceParam && price <= maxPriceParam;
       const hasSelectedTag =
-  selectedTags.length === 0 ||
-  p.tags?.some((tag: string) => selectedTags.includes(tag));
+        selectedTags.length === 0 ||
+        p.tags?.some((tag: string) => selectedTags.includes(tag));
       return inPriceRange && hasSelectedTag;
     }),
   };
@@ -451,6 +451,9 @@ const COLLECTION_ITEM_FRAGMENT = `#graphql
     title
     availableForSale
     tags
+    selectedOrFirstAvailableVariant {
+      id
+    }
     featuredImage {
       id
       altText

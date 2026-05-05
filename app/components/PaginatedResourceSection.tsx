@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {Pagination} from '@shopify/hydrogen';
 import { Button } from './Button';
+import { Loader2 } from 'lucide-react';
 
 /**
  * <PaginatedResourceSection > is a component that encapsulate how the previous and next behaviors throughout your application.
@@ -41,7 +42,7 @@ export function PaginatedResourceSection<NodesType>({
               resourcesMarkup
             )}
             <NextLink className="flex justify-center">
-              {isLoading ? 'Loading...' : <Button variant="artistic" size="lg">עוד מוצרים</Button>}
+              {isLoading ? <Loader2 className="w-4 h-4 animate-spin " /> : <Button variant="artistic" size="lg">עוד מוצרים</Button>}
             </NextLink>
           </div>
         );

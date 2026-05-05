@@ -51,7 +51,7 @@ export function AboutSection({about}: {about: About}) {
         </motion.div>
         <motion.div variants={fadeUpVariants}>
           <Button variant="artistic" size="lg" >
-            <Link to="/אודות"> עוד על FUFINKA</Link>
+            <Link to="/pages/אודות"> עוד על FUFINKA</Link>
           </Button>
         </motion.div>
       </motion.div>

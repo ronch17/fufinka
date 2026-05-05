@@ -42,7 +42,7 @@ export function GalleryProductCard({
   const aspectClass = size === 'large' ? 'aspect-[4/5]' : 'aspect-square';
 
   return (
-    <div className="group relative overflow-hidden h-fit cursor-pointer max-md:px-5">
+    <div className="group relative overflow-hidden h-fit cursor-pointer max-md:px-7">
       <div className={`relative ${aspectClass} w-full`}>
         <Link
           to={variantUrl}
@@ -62,6 +62,12 @@ export function GalleryProductCard({
           <div className="translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out bg-black/60 py-3 flex items-center justify-center">
             {variant && variant.availableForSale ? (
               <AddToCartButton
+                analytics={{
+                  product_id: product.id,
+                  product_name: product.title,
+                  product_price: product.priceRange.minVariantPrice.amount,
+                }}
+                disabled={!variant?.availableForSale}
                 lines={[
                   {
                     merchandiseId: variant.id,

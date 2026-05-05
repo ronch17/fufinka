@@ -24,8 +24,8 @@ export const meta: Route.MetaFunction = ({location}) => {
   const description = 'גלריית עבודות ואמנות מקורית על קנבס - פופינקה';
   
   // חשוב: השתמש בכתובת מלאה (Absolute URL) עבור התמונה
-  const domain = 'https://fufinka1-ef02da9369b8db104cb6.o2.myshopify.dev/'; // החלף בדומיין האמיתי שלך
-  const ogImage = `${domain}/og.png`; 
+const domain = 'https://fufinka1-ef02da9369b8db104cb6.o2.myshopify.dev'; 
+const ogImage = `${domain}/og.png`;
 
   return [
     {title},
@@ -278,6 +278,9 @@ const RECOMMENDED_PRODUCTS_QUERY = `#graphql
     title
     handle
     availableForSale
+    selectedOrFirstAvailableVariant {
+      id
+    }
     priceRange {
       minVariantPrice {
         amount

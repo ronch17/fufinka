@@ -10,6 +10,7 @@ import type {
   CartLineFragment,
 } from 'storefrontapi.generated';
 import {Minus, Plus, Trash2 } from 'lucide-react';
+import {useCartFormRoute} from '~/hooks/use-cart-form-route';
 
 export type CartLine = OptimisticCartLine<CartApiQueryFragment>;
 
@@ -29,8 +30,15 @@ export function CartLineItem({
   childrenMap: LineItemChildrenMap;
 }) {
   const {id, merchandise} = line;
-  const {product, title, image, selectedOptions} = merchandise;
-  const lineItemUrl = useVariantUrl(product.handle, selectedOptions);
+  const title = merchandise?.title ?? '';
+  const image = merchandise?.image;
+  const selectedOptions = merchandise?.selectedOptions ?? [];
+  const product = merchandise?.product;
+  const productHandle = product?.handle ?? '';
+  const productTitle = product?.title ?? title;
+
+  const tentativeLineUrl = useVariantUrl(productHandle, selectedOptions);
+  const lineItemUrl = productHandle ? tentativeLineUrl : '#';
   const {close} = useAside();
   const lineItemChildren = childrenMap[id];
   const childrenLabelId = `cart-line-children-${id}`;
@@ -50,7 +58,7 @@ export function CartLineItem({
         {image && (
           <Image
             className="cursor-pointer"
-            alt={title}
+            alt={title || productTitle}
             aspectRatio="1/1"
             data={image}
             height={100}
@@ -71,7 +79,7 @@ export function CartLineItem({
             }}
           >
             <p>
-              <strong className="font-[GveretLevin]">{product.title}</strong>
+              <strong className="font-[GveretLevin]">{productTitle}</strong>
             </p>
           </Link>
           <ProductPrice price={line?.cost?.totalAmount} />
@@ -91,7 +99,7 @@ export function CartLineItem({
       {lineItemChildren ? (
         <div>
           <p id={childrenLabelId} className="sr-only">
-            Line items with {product.title}
+            Line items with {productTitle}
           </p>
           <ul aria-labelledby={childrenLabelId} className="cart-line-children">
             {lineItemChildren.map((childLine) => (
@@ -167,10 +175,11 @@ function CartLineRemoveButton({
   lineIds: string[];
   disabled: boolean;
 }) {
+  const cartRoute = useCartFormRoute();
   return (
     <CartForm
-      fetcherKey={getUpdateKey(lineIds)}
-      route="/cart"
+      fetcherKey={getRemoveKey(lineIds)}
+      route={cartRoute}
       action={CartForm.ACTIONS.LinesRemove}
       inputs={{lineIds}}
     >
@@ -189,11 +198,12 @@ function CartLineUpdateButton({
   lines: CartLineUpdateInput[];
 }) {
   const lineIds = lines.map((line) => line.id);
+  const cartRoute = useCartFormRoute();
 
   return (
     <CartForm
       fetcherKey={getUpdateKey(lineIds)}
-      route="/cart"
+      route={cartRoute}
       action={CartForm.ACTIONS.LinesUpdate}
       inputs={{lines}}
     >
@@ -203,12 +213,12 @@ function CartLineUpdateButton({
 }
 
 /**
- * Returns a unique key for the update action. This is used to make sure actions modifying the same line
- * items are not run concurrently, but cancel each other. For example, if the user clicks "Increase quantity"
- * and "Decrease quantity" in rapid succession, the actions will cancel each other and only the last one will run.
- * @param lineIds - line ids affected by the update
- * @returns
+ * Fetcher של LinesRemove לא יכול לחלוק מפתח עם LinesUpdate — אחרת useOptimisticCart מנסה למזג בעדכון/הסרה על אותן שורות ומקבלות אזהרות ("remove line … doesn't exist").
  */
 function getUpdateKey(lineIds: string[]) {
   return [CartForm.ACTIONS.LinesUpdate, ...lineIds].join('-');
+}
+
+function getRemoveKey(lineIds: string[]) {
+  return [CartForm.ACTIONS.LinesRemove, ...lineIds].join('-');
 }

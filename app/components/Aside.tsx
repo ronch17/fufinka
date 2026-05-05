@@ -4,6 +4,8 @@ import {
   useContext,
   useEffect,
   useState,
+  useCallback,
+  useMemo,
 } from 'react';
 
 type AsideType = 'search' | 'cart' | 'mobile' | 'closed';
@@ -74,17 +76,25 @@ export function Aside({
 
 const AsideContext = createContext<AsideContextValue | null>(null);
 
+
 Aside.Provider = function AsideProvider({children}: {children: ReactNode}) {
   const [type, setType] = useState<AsideType>('closed');
 
+  // פונקציית סגירה יציבה שלא משתנה ברינדורים
+  const close = useCallback(() => setType('closed'), []);
+  
+  // פונקציית פתיחה יציבה
+  const open = useCallback((mode: AsideType) => setType(mode), []);
+
+  // יצירת אובייקט ה-value רק כשה-type משתנה
+  const value = useMemo(() => ({
+    type,
+    open,
+    close,
+  }), [type, open, close]);
+
   return (
-    <AsideContext.Provider
-      value={{
-        type,
-        open: setType,
-        close: () => setType('closed'),
-      }}
-    >
+    <AsideContext.Provider value={value}>
       {children}
     </AsideContext.Provider>
   );

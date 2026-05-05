@@ -2,8 +2,9 @@ import type {CartApiQueryFragment} from 'storefrontapi.generated';
 import type {CartLayout} from '~/components/CartMain';
 import {CartForm, Money, type OptimisticCart} from '@shopify/hydrogen';
 import {useEffect, useRef} from 'react';
-import {useFetcher} from 'react-router';
+import {Link, useFetcher} from 'react-router';
 import { Button } from './Button';
+import {useCartFormRoute} from '~/hooks/use-cart-form-route';
 
 type CartSummaryProps = {
   cart: OptimisticCart<CartApiQueryFragment | null>;
@@ -38,11 +39,13 @@ function CartCheckoutActions({checkoutUrl}: {checkoutUrl?: string}) {
   if (!checkoutUrl) return null;
 
   return (
-    <Button variant="artistic" size="lg">
-      <a href={checkoutUrl} target="_self">
+      <Link to={checkoutUrl} target="_self" className="w-full">
+            <Button variant="artistic" size="lg" className="w-full">
+
         <p>לרכישה</p>
-      </a>
-    </Button>
+            </Button>
+
+      </Link>
   );
 }
 
@@ -103,9 +106,10 @@ function UpdateDiscountForm({
   discountCodes?: string[];
   children: React.ReactNode;
 }) {
+  const cartRoute = useCartFormRoute();
   return (
     <CartForm
-      route="/cart"
+      route={cartRoute}
       action={CartForm.ACTIONS.DiscountCodesUpdate}
       inputs={{
         discountCodes: discountCodes || [],
@@ -174,10 +178,11 @@ function AddGiftCardForm({
   fetcherKey?: string;
   children: React.ReactNode;
 }) {
+  const cartRoute = useCartFormRoute();
   return (
     <CartForm
       fetcherKey={fetcherKey}
-      route="/cart"
+      route={cartRoute}
       action={CartForm.ACTIONS.GiftCardCodesAdd}
     >
       {children}
@@ -192,9 +197,10 @@ function RemoveGiftCardForm({
   giftCardId: string;
   children: React.ReactNode;
 }) {
+  const cartRoute = useCartFormRoute();
   return (
     <CartForm
-      route="/cart"
+      route={cartRoute}
       action={CartForm.ACTIONS.GiftCardCodesRemove}
       inputs={{
         giftCardCodes: [giftCardId],

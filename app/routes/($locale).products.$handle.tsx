@@ -22,7 +22,7 @@ import sectionBg from '~/assets/products-background.jpeg';
 
 export const meta: Route.MetaFunction = ({data}) => {
   return [
-    {title: `Hydrogen | ${data?.product.title ?? ''}`},
+    {title: `Fufinka | ${data?.product.title ?? ''}`},
     {
       rel: 'canonical',
       href: `/products/${data?.product.handle}`,
@@ -340,6 +340,9 @@ const RELATED_PRODUCT_CARD_FRAGMENT = `#graphql
     title
     handle
     availableForSale
+    selectedOrFirstAvailableVariant {
+      id
+    }
     priceRange {
       minVariantPrice {
         amount

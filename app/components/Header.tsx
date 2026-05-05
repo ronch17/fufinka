@@ -1,10 +1,10 @@
-import {Suspense} from 'react';
-import {Await, NavLink, useAsyncValue, useFetcher} from 'react-router';
+import {NavLink, useRouteLoaderData} from 'react-router';
 import {
+  AnalyticsEvent,
   type CartViewPayload,
   useAnalytics,
   useOptimisticCart,
-  Image
+  Image,
 } from '@shopify/hydrogen';
 import type {HeaderQuery, CartApiQueryFragment} from 'storefrontapi.generated';
 import {useAside} from '~/components/Aside';
@@ -13,7 +13,6 @@ import { AnnouncementBar } from './AnnouncementBar';
 
 interface HeaderProps {
   header: HeaderQuery;
-  cart: Promise<CartApiQueryFragment | null>;
   isLoggedIn: Promise<boolean>;
   publicStoreDomain: string;
 }
@@ -23,7 +22,6 @@ type Viewport = 'desktop' | 'mobile';
 export function Header({
   header,
   isLoggedIn,
-  cart,
   publicStoreDomain,
 }: HeaderProps) {
   const {shop, menu} = header;
@@ -49,7 +47,7 @@ export function Header({
         primaryDomainUrl={header.shop.primaryDomain.url}
         publicStoreDomain={publicStoreDomain}
       />
-      <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
+      <HeaderCtas isLoggedIn={isLoggedIn} />
     </header>
     </>
   );
@@ -110,10 +108,7 @@ export function HeaderMenu({
   );
 }
 
-function HeaderCtas({
-  isLoggedIn,
-  cart,
-}: Pick<HeaderProps, 'isLoggedIn' | 'cart'>) {
+function HeaderCtas({isLoggedIn}: Pick<HeaderProps, 'isLoggedIn'>) {
   return (
     <nav className="header-ctas max-md:ml-auto md:mr-auto" role="navigation">
       <HeaderMenuMobileToggle />
@@ -125,7 +120,7 @@ function HeaderCtas({
         </Suspense>
       </NavLink> */}
       <SearchToggle />
-      <CartToggle cart={cart} />
+      <CartToggle />
     </nav>
   );
 }
@@ -162,7 +157,7 @@ function CartBadge({count}: {count: number | null}) {
       onClick={(e) => {
         e.preventDefault();
         open('cart');
-        publish('cart_viewed', {
+        publish(AnalyticsEvent.CART_VIEWED, {
           cart,
           prevCart,
           shop,
@@ -175,21 +170,16 @@ function CartBadge({count}: {count: number | null}) {
   );
 }
 
-function CartToggle({cart}: Pick<HeaderProps, 'cart'>) {
-  return (
-    <Suspense fallback={<CartBadge count={null} />}>
-    <Await resolve={cart}>
-  {(cartData) => <CartBanner key={cartData?.id} cart={cartData} />}
-</Await>
-    </Suspense>
-  );
+function CartToggle() {
+  return <CartBanner />;
 }
 
-function CartBanner({cart }: {cart: CartApiQueryFragment | null}) {
-  const fetcher = useFetcher({key: 'cart'});
-
-  const optimisticCart =
-    fetcher.data?.cart ?? cart;
+function CartBanner() {
+  const root = useRouteLoaderData('root') as {
+    cart?: CartApiQueryFragment | null;
+  } | null;
+  const baseline = root?.cart ?? null;
+  const optimisticCart = useOptimisticCart(baseline);
 
   return <CartBadge count={optimisticCart?.totalQuantity ?? 0} />;
 }
