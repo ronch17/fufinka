@@ -5,11 +5,15 @@ import { useFetcher } from "react-router";
 import type { PredictiveSearchReturn } from "~/lib/search";
 import { useId } from "react";
 import {Loader2 } from 'lucide-react';
+import { useEffect } from "react";
 
-function SearchAside() {
-  const fetcher = useFetcher<PredictiveSearchReturn>(); // 👈 כאן
+export function SearchAside() {
+  const fetcher = useFetcher<PredictiveSearchReturn>(); 
   const queriesDatalistId = useId();
 
+  useEffect(() => {
+  console.log('FETCHER DATA:', fetcher.data);
+}, [fetcher.data]);
   return (
     <Aside type="search" heading="SEARCH">
       <div className="predictive-search">
@@ -19,6 +23,7 @@ function SearchAside() {
             <>
               <input
                 name="q"
+                type="search"
                 onChange={fetchResults}
                 onFocus={fetchResults}
                 ref={inputRef}

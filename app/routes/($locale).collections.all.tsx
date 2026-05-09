@@ -269,7 +269,6 @@ export default function Collection() {
     setSearchParams(next);
   }, 400);
 
-  console.log(allTags);
 
   return (
     <>

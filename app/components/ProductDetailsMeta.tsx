@@ -27,7 +27,6 @@ export function ProductDetailsMeta({
   const {productType, tags, vendor, publishedAt, category, collections} =
     product;
 
-  console.log(product);
 
   const categoryPath =
     category &&

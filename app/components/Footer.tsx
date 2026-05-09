@@ -7,6 +7,7 @@ import type {
   HeaderQuery,
 } from 'storefrontapi.generated';
 import { FacebookIcon, InstagramIcon, YoutubeIcon } from 'lucide-react';
+import { Whatsapp } from './Whatsapp';
 
 interface FooterProps {
   footer: Promise<FooterQuery | null>;
@@ -206,6 +207,7 @@ export function Footer({
             {/* שורת זכויות */}
             <div className="footer-bottom flex justify-center">
               <p>{new Date().getFullYear()} {header.shop.name}. כל הזכויות שמורות. ©</p>
+              <Whatsapp />
             </div>
               </footer>
               );

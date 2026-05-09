@@ -1,5 +1,5 @@
 import {Link, useFetcher} from 'react-router';
-import {useId} from 'react';
+import {useEffect, useId} from 'react';
 import type {
   CartApiQueryFragment,
   FooterQuery,
@@ -73,6 +73,9 @@ function CartAside({cart}: {cart: PageLayoutProps['cart']}) {
 function SearchAside() {
   const fetcher = useFetcher<PredictiveSearchReturn>({key: 'predictive-search'});
   const queriesDatalistId = useId();
+  // useEffect(() => {
+  //   console.log('fetcher:', fetcher);
+  // }, [fetcher]);
 
   return (
     <Aside type="search" heading="חיפוש">
@@ -110,6 +113,7 @@ function SearchAside() {
 
 
             </>
+
           )}
         </SearchFormPredictive>
 

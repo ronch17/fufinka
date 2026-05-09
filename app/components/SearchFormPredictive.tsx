@@ -3,21 +3,22 @@ import {
   useNavigate,
   type FormProps,
   type Fetcher,
+  type FetcherWithComponents,
 } from 'react-router';
 import React, {useRef, useEffect} from 'react';
 import type {PredictiveSearchReturn} from '~/lib/search';
 import {useAside} from './Aside';
 
-type SearchFormPredictiveChildren = (args: {
+type SearchFormPredictiveChildren = (props: {
   fetchResults: (event: React.ChangeEvent<HTMLInputElement>) => void;
   goToSearch: () => void;
   inputRef: React.MutableRefObject<HTMLInputElement | null>;
-  fetcher: Fetcher<PredictiveSearchReturn>;
+  fetcher: FetcherWithComponents<PredictiveSearchReturn>;
 }) => React.ReactNode;
 
 type SearchFormPredictiveProps = Omit<FormProps, 'children'> & {
   children: SearchFormPredictiveChildren | null;
-  fetcher: Fetcher<PredictiveSearchReturn>; // 👈 חדש
+  fetcher: FetcherWithComponents<PredictiveSearchReturn>;
 };
 
 export const SEARCH_ENDPOINT = '/search';
@@ -57,6 +58,7 @@ export function SearchFormPredictive({
       {q: event.target.value || '', limit: 5, predictive: true},
       {method: 'GET', action: SEARCH_ENDPOINT},
     );
+
   }
 
   // ensure the passed input has a type of search, because SearchResults

@@ -61,7 +61,6 @@ export default function Collections() {
       <PaginatedResourceSection<CollectionFragment>
         connection={collections}
         resourcesClassName="collections-grid"
-        className='px-10'
       >
         {({node: collection, index}) => (
           <CollectionItem

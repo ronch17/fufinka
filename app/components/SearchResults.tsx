@@ -22,8 +22,11 @@ export function SearchResults({
     return null;
   }
 
+  console.log('result:', result);
   return children({...result.items, term});
 }
+
+
 
 SearchResults.Articles = SearchResultsArticles;
 SearchResults.Pages = SearchResultsPages;
