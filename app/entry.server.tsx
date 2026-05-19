@@ -7,6 +7,8 @@ import {
 } from '@shopify/hydrogen';
 import type {EntryContext} from 'react-router';
 
+export const runtime = "nodejs";
+
 export default async function handleRequest(
   request: Request,
   responseStatusCode: number,

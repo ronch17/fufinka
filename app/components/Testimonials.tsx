@@ -38,7 +38,6 @@ export function mapTestimonials(metaobjects: any[]): Testimonial[] {
       ])
     );
 
-    // console.log(data.fields);
 
     return {
       id: item.id,

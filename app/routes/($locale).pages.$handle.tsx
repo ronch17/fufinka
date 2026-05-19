@@ -280,7 +280,7 @@ export default function Page() {
         <AboutPage page={page} />
       )}
 
-      {page.handle === 'ליווי-יצירתי' && (
+      {page.handle === 'סדנאות' && (
        <Workshops page={page} products={products} />
 )}
 

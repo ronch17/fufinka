@@ -87,7 +87,6 @@ export function ContactForm() {
         setError(json?.message ?? 'משהו השתבש — נסו שוב בעוד רגע.');
         return;
       }
-      console.log(json);
 
       setSuccess(true);
       e.currentTarget.reset();
