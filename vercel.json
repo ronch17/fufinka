@@ -1,6 +1,7 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "functions": {
-    "app/**": {
+    "app/**/*.{js,ts,tsx}": {
       "runtime": "nodejs20.x"
     }
   }
